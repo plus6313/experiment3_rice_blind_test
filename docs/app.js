@@ -9,6 +9,7 @@ const CRITERIA_NAMES = [
   "criterion_1_stage_match",
   "criterion_2_gt_citation",
   "criterion_3_no_errors",
+  "criterion_4_no_fluff",
   "overall_verdict",
 ];
 
@@ -50,6 +51,7 @@ function isComplete(v) {
     v.criterion_1_stage_match &&
     v.criterion_2_gt_citation &&
     v.criterion_3_no_errors &&
+    v.criterion_4_no_fluff &&
     v.overall_verdict
   );
 }
@@ -61,6 +63,7 @@ function currentFormValues() {
     criterion_1_stage_match: fd.get("criterion_1_stage_match") || null,
     criterion_2_gt_citation: fd.get("criterion_2_gt_citation") || null,
     criterion_3_no_errors: fd.get("criterion_3_no_errors") || null,
+    criterion_4_no_fluff: fd.get("criterion_4_no_fluff") || null,
     overall_verdict: fd.get("overall_verdict") || null,
     comment: document.getElementById("comment").value || "",
   };
@@ -178,6 +181,7 @@ function buildPayload() {
         criterion_1_stage_match: null,
         criterion_2_gt_citation: null,
         criterion_3_no_errors: null,
+        criterion_4_no_fluff: null,
         overall_verdict: null,
         comment: "",
       }),
@@ -272,6 +276,7 @@ async function init() {
   document.getElementById("btn-start").addEventListener("click", onStart);
   document.getElementById("btn-prev").addEventListener("click", () => goTo(currentIndex - 1));
   document.getElementById("btn-next").addEventListener("click", () => goTo(currentIndex + 1));
+  document.getElementById("btn-early-submit").addEventListener("click", () => goTo(ITEMS.length));
   document.getElementById("btn-submit").addEventListener("click", onSubmit);
   document.getElementById("btn-download").addEventListener("click", downloadBackup);
   document.getElementById("criteria-form").addEventListener("change", onFormChange);
