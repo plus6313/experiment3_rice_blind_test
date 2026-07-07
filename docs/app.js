@@ -10,6 +10,7 @@ const CRITERIA_NAMES = [
   "criterion_2_gt_citation",
   "criterion_3_no_errors",
   "criterion_4_no_fluff",
+  "criterion_5_no_hallucination",
   "overall_verdict",
 ];
 
@@ -52,6 +53,7 @@ function isComplete(v) {
     v.criterion_2_gt_citation &&
     v.criterion_3_no_errors &&
     v.criterion_4_no_fluff &&
+    v.criterion_5_no_hallucination &&
     v.overall_verdict
   );
 }
@@ -64,6 +66,7 @@ function currentFormValues() {
     criterion_2_gt_citation: fd.get("criterion_2_gt_citation") || null,
     criterion_3_no_errors: fd.get("criterion_3_no_errors") || null,
     criterion_4_no_fluff: fd.get("criterion_4_no_fluff") || null,
+    criterion_5_no_hallucination: fd.get("criterion_5_no_hallucination") || null,
     overall_verdict: fd.get("overall_verdict") || null,
     comment: document.getElementById("comment").value || "",
   };
@@ -182,6 +185,7 @@ function buildPayload() {
         criterion_2_gt_citation: null,
         criterion_3_no_errors: null,
         criterion_4_no_fluff: null,
+        criterion_5_no_hallucination: null,
         overall_verdict: null,
         comment: "",
       }),

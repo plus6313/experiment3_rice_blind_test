@@ -20,6 +20,8 @@ CRITERIA = [
     "criterion_1_stage_match",
     "criterion_2_gt_citation",
     "criterion_3_no_errors",
+    "criterion_4_no_fluff",
+    "criterion_5_no_hallucination",
 ]
 
 
@@ -129,6 +131,8 @@ def main():
                     "criterion_1_stage_match": r.get("criterion_1_stage_match"),
                     "criterion_2_gt_citation": r.get("criterion_2_gt_citation"),
                     "criterion_3_no_errors": r.get("criterion_3_no_errors"),
+                    "criterion_4_no_fluff": r.get("criterion_4_no_fluff"),
+                    "criterion_5_no_hallucination": r.get("criterion_5_no_hallucination"),
                     "overall_result": result,
                     "comment": r.get("comment", ""),
                 })

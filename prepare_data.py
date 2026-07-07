@@ -115,8 +115,11 @@ def build_items(sampled_ids, ft_data, base_data, seed):
 
         clean_a, flag_a, hits_a = sanitize_answer(raw_a, config.IDENTITY_KEYWORDS)
         clean_b, flag_b, hits_b = sanitize_answer(raw_b, config.IDENTITY_KEYWORDS)
-        clean_a = strip_markdown(clean_a)
-        clean_b = strip_markdown(clean_b)
+        # 只對 base_qwen 做 markdown 清理（微調後模型的回答已經很簡潔，不需要）
+        if model_a == "base_qwen":
+            clean_a = strip_markdown(clean_a)
+        if model_b == "base_qwen":
+            clean_b = strip_markdown(clean_b)
 
         comparison_id = f"{image_id}_Q4"
 
