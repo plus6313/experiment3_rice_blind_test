@@ -1,0 +1,11 @@
+# 身分對照表：絕對不能上傳，這是唯一能把 A/B 解回 ft_qwen/base_qwen 的檔案
+private/
+
+# 從 Google Drive 下載回來的原始評審回覆（含在地端分析即可，不需要上傳）
+collected_responses/*.json
+
+# 分析輸出（本地留存即可）
+results/
+
+__pycache__/
+*.pyc

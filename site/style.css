@@ -1,0 +1,195 @@
+* { box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, "Segoe UI", "Microsoft JhengHei", "PingFang TC", sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px 16px 60px;
+  color: #222;
+  line-height: 1.6;
+  background: #fafaf7;
+}
+
+h1 { font-size: 1.4rem; }
+
+.screen { display: none; }
+
+/* ---- 開始畫面 ---- */
+#screen-intro input[type="text"] {
+  font-size: 1rem;
+  padding: 8px 10px;
+  width: 100%;
+  max-width: 320px;
+  margin: 8px 0 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.hint {
+  color: #b45309;
+  font-size: 0.9rem;
+}
+
+/* ---- 進度條 ---- */
+.progress-bar {
+  background: #e5e5e0;
+  border-radius: 6px;
+  height: 8px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+.progress-fill {
+  background: #2f7a3d;
+  height: 100%;
+  width: 0%;
+  transition: width 0.2s;
+}
+.progress-label {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+/* ---- 內容區塊 ---- */
+.context-box {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.item-image {
+  max-width: 100%;
+  max-height: 420px;
+  display: block;
+  margin: 0 auto 14px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.question-box, .gt-box {
+  white-space: pre-wrap;
+  background: #fff;
+  border: 1px solid #e2e2dc;
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+}
+
+.gt-box {
+  background: #eefbf0;
+  border-color: #bfe8c6;
+  font-size: 1.05rem;
+}
+
+.answers {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+@media (min-width: 720px) {
+  .answers { flex-direction: row; }
+  .answer-card { flex: 1; min-width: 0; }
+}
+
+.answer-card {
+  background: #fff;
+  border: 1px solid #e2e2dc;
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.answer-card h3 {
+  margin: 0 0 8px;
+  color: #2f7a3d;
+}
+.answer-text {
+  white-space: pre-wrap;
+  font-size: 0.95rem;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+/* ---- 評分表單 ---- */
+.criterion {
+  background: #fff;
+  border: 1px solid #e2e2dc;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+}
+.criterion.overall {
+  background: #fff7e6;
+  border-color: #f0d9a0;
+}
+.radio-row {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.radio-row label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+textarea {
+  width: 100%;
+  font-family: inherit;
+  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+
+/* ---- 按鈕 / 導覽列 ---- */
+button {
+  font-size: 1rem;
+  padding: 10px 18px;
+  border-radius: 6px;
+  border: 1px solid #2f7a3d;
+  background: #2f7a3d;
+  color: #fff;
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+button.secondary {
+  background: #fff;
+  color: #2f7a3d;
+}
+
+.nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+#screen-done button { margin: 6px 8px 6px 0; }
+
+.jump-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 20px;
+}
+.jump-btn {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  font-size: 0.85rem;
+  border-radius: 6px;
+}
+.jump-btn.done {
+  background: #2f7a3d;
+  border-color: #2f7a3d;
+}
+.jump-btn.todo {
+  background: #fff;
+  color: #b45309;
+  border-color: #f0d9a0;
+}

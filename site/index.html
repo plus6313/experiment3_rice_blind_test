@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>水稻田生育階段判斷 — 人工盲測評分</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <section id="screen-intro" class="screen">
+    <h1>水稻田生育階段判斷 — 人工盲測評分</h1>
+    <p>感謝您協助本研究進行人工評測。以下共有 <strong>50</strong> 組題目，每組會呈現同一張水稻田照片、
+    現場實測數據，以及兩個匿名系統（回答 A / 回答 B）針對「目前生育階段」的判斷。
+    兩個系統的身分已完全匿名，且每一題 A / B 出現的順序都經過隨機排列，請單純依回答內容本身判斷即可。</p>
+    <p>作答途中可隨時關閉頁面，下次用同一個瀏覽器打開會自動接續進度。</p>
+    <label for="evaluator-name">請輸入您的姓名：</label><br>
+    <input type="text" id="evaluator-name" placeholder="例如：王小明">
+    <p id="resume-hint" class="hint" style="display:none"></p>
+    <div>
+      <button id="btn-start">開始評測</button>
+    </div>
+  </section>
+
+  <section id="screen-question" class="screen">
+    <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+    <div id="progress-label" class="progress-label"></div>
+
+    <div class="context-box">
+      <span id="ctx-field"></span> ・ 拍攝日期：<span id="ctx-date"></span> ・ 品種：<span id="ctx-variety"></span>
+    </div>
+
+    <img id="item-image" class="item-image" style="display:none" alt="田間照片">
+
+    <div class="question-box" id="question-text"></div>
+
+    <div class="gt-box">
+      ✅ 真實生育階段（Ground Truth）：<strong id="gt-stage"></strong>
+    </div>
+
+    <div class="answers">
+      <div class="answer-card">
+        <h3>回答 A</h3>
+        <div id="answer-a" class="answer-text"></div>
+      </div>
+      <div class="answer-card">
+        <h3>回答 B</h3>
+        <div id="answer-b" class="answer-text"></div>
+      </div>
+    </div>
+
+    <form id="criteria-form">
+      <div class="criterion">
+        <p>1. 哪個回答的生育階段判斷跟 GT 更吻合？</p>
+        <div class="radio-row">
+          <label><input type="radio" name="criterion_1_stage_match" value="A"> A</label>
+          <label><input type="radio" name="criterion_1_stage_match" value="B"> B</label>
+          <label><input type="radio" name="criterion_1_stage_match" value="tie"> 平手</label>
+        </div>
+      </div>
+      <div class="criterion">
+        <p>2. 哪個回答的「判斷依據」更確實引用了現場實測數值？</p>
+        <div class="radio-row">
+          <label><input type="radio" name="criterion_2_gt_citation" value="A"> A</label>
+          <label><input type="radio" name="criterion_2_gt_citation" value="B"> B</label>
+          <label><input type="radio" name="criterion_2_gt_citation" value="tie"> 平手</label>
+        </div>
+      </div>
+      <div class="criterion">
+        <p>3. 哪個回答沒有明顯錯誤或矛盾？</p>
+        <div class="radio-row">
+          <label><input type="radio" name="criterion_3_no_errors" value="A"> A</label>
+          <label><input type="radio" name="criterion_3_no_errors" value="B"> B</label>
+          <label><input type="radio" name="criterion_3_no_errors" value="tie"> 平手</label>
+        </div>
+      </div>
+      <div class="criterion overall">
+        <p><strong>總體判定：整體來說，哪個回答比較好？</strong></p>
+        <div class="radio-row">
+          <label><input type="radio" name="overall_verdict" value="A"> A 勝</label>
+          <label><input type="radio" name="overall_verdict" value="B"> B 勝</label>
+          <label><input type="radio" name="overall_verdict" value="tie"> 平手</label>
+        </div>
+      </div>
+      <div class="criterion">
+        <p>備註（選填）：</p>
+        <textarea id="comment" rows="2"></textarea>
+      </div>
+    </form>
+
+    <div class="nav-row">
+      <button id="btn-prev" class="secondary">← 上一題</button>
+      <span id="answered-hint" class="hint"></span>
+      <button id="btn-next">下一題 →</button>
+    </div>
+  </section>
+
+  <section id="screen-done" class="screen">
+    <h1>感謝完成評測！</h1>
+    <p id="done-summary"></p>
+    <div>
+      <button id="btn-submit">送出評測結果</button>
+      <button id="btn-download" class="secondary">下載我的作答備份（JSON）</button>
+    </div>
+    <p id="submit-status" class="hint"></p>
+    <p>點下方題號可直接跳回該題修改：</p>
+    <div id="jump-list" class="jump-list"></div>
+  </section>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
