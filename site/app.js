@@ -2,7 +2,7 @@
 // 設定：部署 Apps Script 後，把下面網址換成你的「網頁應用程式」網址
 // （site/../apps_script/Code.gs 部署完成後 Google 會給你這個網址）
 // ============================================================================
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzwLbXtQ1XKOQbj6UFl6Vx2nDymot3EV-VyNW298O7m_K9ksubY9tLEuSSf18qSo55Vfw/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzt70DJOdVboTrWvO662T_zAROI47dTyZgCCVdO3U44X869vIDpcIziyf3m0mRbOZEn/exec";
 
 const STORAGE_KEY = "exp3_progress_v1";
 const CRITERIA_NAMES = [
