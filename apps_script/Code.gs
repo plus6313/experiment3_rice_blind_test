@@ -24,9 +24,55 @@
 
 var FOLDER_ID = '1lLXDS8qw93Ol6zW4mbHFRMIfPMcorHdp';
 
+function jsonOutput(payload) {
+  return ContentService
+    .createTextOutput(JSON.stringify(payload))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function jsonpOutput(callback, payload) {
+  var safeCallback = (callback || '').toString().replace(/[^\w.$]/g, '');
+  if (!safeCallback) {
+    return jsonOutput(payload);
+  }
+
+  return ContentService
+    .createTextOutput(safeCallback + '(' + JSON.stringify(payload) + ');')
+    .setMimeType(ContentService.MimeType.JAVASCRIPT);
+}
+
+function receiptKey(submissionId) {
+  return 'exp3_receipt_' + submissionId;
+}
+
+function saveReceipt(submissionId, payload) {
+  if (!submissionId) return;
+  CacheService
+    .getScriptCache()
+    .put(receiptKey(submissionId), JSON.stringify(payload), 21600);
+}
+
+function getReceipt(submissionId) {
+  if (!submissionId) {
+    return null;
+  }
+
+  var cached = CacheService.getScriptCache().get(receiptKey(submissionId));
+  return cached ? JSON.parse(cached) : null;
+}
+
 function doPost(e) {
+  var submissionId = '';
   try {
+    if (!e || !e.postData || !e.postData.contents) {
+      throw new Error('Missing POST body.');
+    }
+
     var data = JSON.parse(e.postData.contents);
+    if (!data || typeof data !== 'object' || !data.content) {
+      throw new Error('Invalid payload. Expected { fileName, content }.');
+    }
+    submissionId = (data.submissionId || '').toString().replace(/[^\w.-]/g, '');
 
     var rawName = (data.fileName || ('rice_annotation_' + new Date().getTime() + '.json')).toString();
     var fileName = rawName.replace(/[\\\/:*?"<>|]/g, '_');
@@ -34,21 +80,49 @@ function doPost(e) {
     var folder = DriveApp.getFolderById(FOLDER_ID);
     var contentString = JSON.stringify(data.content, null, 2);
     var blob = Utilities.newBlob(contentString, 'application/json', fileName);
-    folder.createFile(blob);
+    var file = folder.createFile(blob);
 
-    return ContentService
-      .createTextOutput(JSON.stringify({ status: 'success', fileName: fileName }))
-      .setMimeType(ContentService.MimeType.JSON);
+    var successPayload = {
+      status: 'success',
+      submissionId: submissionId,
+      fileName: file.getName(),
+      fileId: file.getId(),
+      size: file.getSize(),
+      folderId: FOLDER_ID,
+      createdAt: new Date().toISOString()
+    };
+    saveReceipt(submissionId, successPayload);
+    return jsonOutput(successPayload);
   } catch (error) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ status: 'error', message: error.toString() }))
-      .setMimeType(ContentService.MimeType.JSON);
+    var errorPayload = {
+      status: 'error',
+      submissionId: submissionId,
+      message: error && error.message ? error.message : error.toString(),
+      stack: error && error.stack ? error.stack : ''
+    };
+    saveReceipt(submissionId, errorPayload);
+    return jsonOutput(errorPayload);
   }
 }
 
 /** 部署後可直接在瀏覽器打開網頁應用程式網址，看到這個回應就代表部署成功。 */
 function doGet(e) {
-  return ContentService
-    .createTextOutput(JSON.stringify({ status: 'ok', message: 'exp3 endpoint is alive' }))
-    .setMimeType(ContentService.MimeType.JSON);
+  var callback = e && e.parameter && e.parameter.callback;
+  var submissionId = e && e.parameter && e.parameter.submissionId;
+  if (submissionId) {
+    var receipt = getReceipt(submissionId);
+    return jsonpOutput(callback, receipt || {
+      status: 'pending',
+      submissionId: submissionId,
+      message: 'No receipt yet.'
+    });
+  }
+
+  var payload = {
+    status: 'ok',
+    message: 'exp3 endpoint is alive',
+    folderId: FOLDER_ID,
+    checkedAt: new Date().toISOString()
+  };
+  return jsonpOutput(callback, payload);
 }

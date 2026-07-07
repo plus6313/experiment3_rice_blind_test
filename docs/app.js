@@ -2,7 +2,7 @@
 // 設定：部署 Apps Script 後，把下面網址換成你的「網頁應用程式」網址
 // （site/../apps_script/Code.gs 部署完成後 Google 會給你這個網址）
 // ============================================================================
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzt70DJOdVboTrWvO662T_zAROI47dTyZgCCVdO3U44X869vIDpcIziyf3m0mRbOZEn/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyjOWJkuD6u1xlq7iy4vdgLOEB6NV3KHemNoTKmDwEDzHtV4-PhDGJxUz0KPJzaFk91/exec";
 
 const STORAGE_KEY = "exp3_progress_v2";
 const CRITERIA_NAMES = [
@@ -207,8 +207,87 @@ function downloadBackup() {
   URL.revokeObjectURL(url);
 }
 
+function appsScriptJsonpRequest(params = {}, timeoutMs = 10000) {
+  return new Promise((resolve, reject) => {
+    const callbackName = `exp3EndpointPing_${Date.now()}_${Math.random()
+      .toString(36)
+      .slice(2)}`;
+    const script = document.createElement("script");
+    const separator = APPS_SCRIPT_URL.includes("?") ? "&" : "?";
+    const searchParams = new URLSearchParams({
+      ...params,
+      callback: callbackName,
+      t: Date.now().toString(),
+    });
+    const timeout = window.setTimeout(() => {
+      cleanup();
+      reject(new Error("Apps Script endpoint check timed out."));
+    }, timeoutMs);
+
+    function cleanup() {
+      window.clearTimeout(timeout);
+      script.remove();
+      delete window[callbackName];
+    }
+
+    window[callbackName] = (result) => {
+      cleanup();
+      if (
+        result &&
+        (result.status === "ok" || result.status === "success" || result.status === "pending")
+      ) {
+        resolve(result);
+      } else {
+        reject(new Error((result && result.message) || "Apps Script endpoint returned an error."));
+      }
+    };
+
+    script.onerror = () => {
+      cleanup();
+      reject(new Error("Apps Script endpoint is not publicly reachable."));
+    };
+
+    script.src = `${APPS_SCRIPT_URL}${separator}${searchParams.toString()}`;
+    document.body.appendChild(script);
+  });
+}
+
+function appsScriptJsonpPing(timeoutMs = 10000) {
+  return appsScriptJsonpRequest({}, timeoutMs);
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+async function waitForSubmissionReceipt(submissionId) {
+  for (let i = 0; i < 10; i += 1) {
+    const result = await appsScriptJsonpRequest({ submissionId }, 10000);
+    if (result.status === "success") return result;
+    if (result.status !== "pending") {
+      throw new Error(result.message || "Apps Script submission failed.");
+    }
+    await sleep(1000);
+  }
+
+  throw new Error("Timed out waiting for Google Drive confirmation.");
+}
+
+async function postToAppsScript(wrapped) {
+  await appsScriptJsonpPing();
+  await fetch(APPS_SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(wrapped),
+  });
+  const result = await waitForSubmissionReceipt(wrapped.submissionId);
+  return { confirmed: true, result };
+}
+
 async function onSubmit() {
   const statusEl = document.getElementById("submit-status");
+  const submitBtn = document.getElementById("btn-submit");
 
   if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.indexOf("PUT_YOUR_") === 0) {
     statusEl.textContent =
@@ -220,25 +299,22 @@ async function onSubmit() {
   const payload = buildPayload();
   const safeName = (evaluatorName || "unknown").replace(/[^\w一-鿿-]/g, "_");
   const ts = new Date().toISOString().replace(/[:.]/g, "-");
+  const submissionId = `exp3_${Date.now()}_${Math.random().toString(36).slice(2)}`;
   // Apps Script 端的 doPost 預期 {fileName, content} 這個包裝格式
-  const wrapped = { fileName: `exp3_${safeName}_${ts}.json`, content: payload };
+  const wrapped = { submissionId, fileName: `exp3_${safeName}_${ts}.json`, content: payload };
 
   statusEl.textContent = "送出中...";
+  submitBtn.disabled = true;
   try {
-    // Apps Script 網頁應用程式走 no-cors，瀏覽器無法讀回應內容，
-    // 但只要 fetch 沒有丟出例外，代表請求已經送出去了。
-    await fetch(APPS_SCRIPT_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(wrapped),
-    });
-    statusEl.textContent = "✅ 已送出，感謝您的協助！（若不放心，可再按一次下載備份自行保存）";
+    const submitResult = await postToAppsScript(wrapped);
+    statusEl.textContent = `✅ 已送出並確認存到 Google Drive：${submitResult.result.fileName}`;
     localStorage.removeItem(STORAGE_KEY);
   } catch (err) {
     statusEl.textContent =
-      "❌ 送出失敗（可能是網路問題），請按「下載備份」把檔案存下來，再回傳給研究人員。";
+      "❌ 送出失敗：Google Apps Script 端點目前無法公開存取。請按「下載我的作答備份」保存，並通知研究人員重新部署。";
     console.error(err);
+  } finally {
+    submitBtn.disabled = false;
   }
 }
 
