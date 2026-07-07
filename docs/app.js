@@ -4,7 +4,7 @@
 // ============================================================================
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzt70DJOdVboTrWvO662T_zAROI47dTyZgCCVdO3U44X869vIDpcIziyf3m0mRbOZEn/exec";
 
-const STORAGE_KEY = "exp3_progress_v1";
+const STORAGE_KEY = "exp3_progress_v2";
 const CRITERIA_NAMES = [
   "criterion_1_stage_match",
   "criterion_2_gt_citation",
