@@ -108,6 +108,13 @@ const screens = {
 function showScreen(name) {
   Object.values(screens).forEach((s) => (s.style.display = "none"));
   screens[name].style.display = "block";
+
+  // 左下角常駐對照表面板只在評測畫面顯示，避免在開始畫面
+  // 擋住輸入姓名／開始評測按鈕
+  const fixedPanel = document.getElementById("fixed-stage-panel");
+  if (fixedPanel) {
+    fixedPanel.style.display = name === "question" ? "" : "none";
+  }
 }
 
 // 去除 Markdown 排版，讓兩個回答在排版上無法區分
