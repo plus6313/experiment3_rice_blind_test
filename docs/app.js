@@ -1,21 +1,28 @@
 // ============================================================================
-// 設定：部署 Apps Script 後，把下面網址換成你的「網頁應用程式」網址
-// （site/../apps_script/Code.gs 部署完成後 Google 會給你這個網址）
+// Q2 盲測評測 — 視覺判讀版 (exp3-q2)
+// 與 Q4 版本差異：
+//   1. STORAGE_KEY / app_version / fileName 前綴均換為 q2 識別字
+//   2. CRITERIA_NAMES 對應五大指標（accuracy / reasoning / depth /
+//      actionability / completeness）+ overall_verdict
+//   3. renderItem() 不顯示 gt_stage（評測者只看圖片，不看 GT）
+//   4. cleanText() 去除 Markdown 排版（去粗體、標題、emoji、條列符號）
+//      讓兩個回答視覺上長度更接近，不透露排版風格
+//   5. 其餘 Google Apps Script 傳送邏輯與 Q4 完全相同（同一 endpoint）
 // ============================================================================
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyjOWJkuD6u1xlq7iy4vdgLOEB6NV3KHemNoTKmDwEDzHtV4-PhDGJxUz0KPJzaFk91/exec";
 
-const STORAGE_KEY = "exp3_progress_v2";
+const STORAGE_KEY = "exp3_q2_progress_v1";
 const CRITERIA_NAMES = [
-  "criterion_1_stage_match",
-  "criterion_2_gt_citation",
-  "criterion_3_no_errors",
-  "criterion_4_no_fluff",
-  "criterion_5_no_hallucination",
+  "criterion_1_accuracy",
+  "criterion_2_reasoning",
+  "criterion_3_depth",
+  "criterion_4_actionability",
+  "criterion_5_completeness",
   "overall_verdict",
 ];
 
 let ITEMS = [];
-let responses = {}; // comparison_id -> {criterion_1_stage_match, criterion_2_gt_citation, criterion_3_no_errors, overall_verdict, comment}
+let responses = {};
 let currentIndex = 0;
 let evaluatorName = "";
 
@@ -28,6 +35,21 @@ const screens = {
 function showScreen(name) {
   Object.values(screens).forEach((s) => (s.style.display = "none"));
   screens[name].style.display = "block";
+}
+
+// 去除 Markdown 排版，讓兩個回答在排版上無法區分
+function cleanText(text) {
+  if (!text) return "";
+  return text
+    .replace(/\*\*(.+?)\*\*/g, "$1")           // **粗體**
+    .replace(/\*(.+?)\*/g, "$1")               // *斜體*
+    .replace(/#{1,6}\s*/g, "")                 // ## 標題
+    .replace(/^[-*+]\s+/gm, "")               // 條列 bullet
+    .replace(/^\d+\.\s+/gm, "")              // 數字條列
+    .replace(/[✅⚠️📌💡📸🌾]/gu, "")          // 常見 emoji
+    .replace(/^---+\s*$/gm, "")              // 水平線
+    .replace(/\n{3,}/g, "\n\n")              // 連續空行壓縮
+    .trim();
 }
 
 function loadProgress() {
@@ -49,11 +71,11 @@ function saveProgress() {
 function isComplete(v) {
   return !!(
     v &&
-    v.criterion_1_stage_match &&
-    v.criterion_2_gt_citation &&
-    v.criterion_3_no_errors &&
-    v.criterion_4_no_fluff &&
-    v.criterion_5_no_hallucination &&
+    v.criterion_1_accuracy &&
+    v.criterion_2_reasoning &&
+    v.criterion_3_depth &&
+    v.criterion_4_actionability &&
+    v.criterion_5_completeness &&
     v.overall_verdict
   );
 }
@@ -62,13 +84,13 @@ function currentFormValues() {
   const form = document.getElementById("criteria-form");
   const fd = new FormData(form);
   return {
-    criterion_1_stage_match: fd.get("criterion_1_stage_match") || null,
-    criterion_2_gt_citation: fd.get("criterion_2_gt_citation") || null,
-    criterion_3_no_errors: fd.get("criterion_3_no_errors") || null,
-    criterion_4_no_fluff: fd.get("criterion_4_no_fluff") || null,
-    criterion_5_no_hallucination: fd.get("criterion_5_no_hallucination") || null,
-    overall_verdict: fd.get("overall_verdict") || null,
-    comment: document.getElementById("comment").value || "",
+    criterion_1_accuracy:      fd.get("criterion_1_accuracy")      || null,
+    criterion_2_reasoning:     fd.get("criterion_2_reasoning")     || null,
+    criterion_3_depth:         fd.get("criterion_3_depth")         || null,
+    criterion_4_actionability: fd.get("criterion_4_actionability") || null,
+    criterion_5_completeness:  fd.get("criterion_5_completeness")  || null,
+    overall_verdict:           fd.get("overall_verdict")           || null,
+    comment:                   document.getElementById("comment").value || "",
   };
 }
 
@@ -88,6 +110,7 @@ function renderItem(index) {
   document.getElementById("ctx-field").textContent = `田區 ${item.field_id}`;
   document.getElementById("ctx-date").textContent = item.date;
   document.getElementById("ctx-variety").textContent = item.variety;
+  // Q2：不顯示 gt_stage，評測者僅憑圖片判斷
 
   const imgEl = document.getElementById("item-image");
   if (item.image) {
@@ -98,9 +121,8 @@ function renderItem(index) {
   }
 
   document.getElementById("question-text").textContent = item.question_text;
-  document.getElementById("gt-stage").textContent = item.gt_stage;
-  document.getElementById("answer-a").textContent = item.answer_a;
-  document.getElementById("answer-b").textContent = item.answer_b;
+  document.getElementById("answer-a").textContent = cleanText(item.answer_a);
+  document.getElementById("answer-b").textContent = cleanText(item.answer_b);
 
   const form = document.getElementById("criteria-form");
   form.reset();
@@ -176,18 +198,18 @@ function buildPayload() {
   return {
     evaluator_name: evaluatorName,
     submitted_at: new Date().toISOString(),
-    app_version: "exp3-v1",
+    app_version: "exp3-q2-v1",
     n_items: ITEMS.length,
     responses: ITEMS.map((item) => ({
       comparison_id: item.comparison_id,
       ...(responses[item.comparison_id] || {
-        criterion_1_stage_match: null,
-        criterion_2_gt_citation: null,
-        criterion_3_no_errors: null,
-        criterion_4_no_fluff: null,
-        criterion_5_no_hallucination: null,
-        overall_verdict: null,
-        comment: "",
+        criterion_1_accuracy:      null,
+        criterion_2_reasoning:     null,
+        criterion_3_depth:         null,
+        criterion_4_actionability: null,
+        criterion_5_completeness:  null,
+        overall_verdict:           null,
+        comment:                   "",
       }),
     })),
   };
@@ -199,17 +221,20 @@ function downloadBackup() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   const safeName = (evaluatorName || "unknown").replace(/[^\w一-鿿-]/g, "_");
+  const ts = new Date().toISOString().replace(/[:.]/g, "-");
   a.href = url;
-  a.download = `exp3_${safeName}_backup.json`;
+  a.download = `exp3_q2_${safeName}_backup_${ts}.json`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
 
+// ---- Google Apps Script 傳送（與 Q4 相同邏輯）----
+
 function appsScriptJsonpRequest(params = {}, timeoutMs = 10000) {
   return new Promise((resolve, reject) => {
-    const callbackName = `exp3EndpointPing_${Date.now()}_${Math.random()
+    const callbackName = `exp3q2EndpointPing_${Date.now()}_${Math.random()
       .toString(36)
       .slice(2)}`;
     const script = document.createElement("script");
@@ -269,7 +294,6 @@ async function waitForSubmissionReceipt(submissionId) {
     }
     await sleep(1000);
   }
-
   throw new Error("Timed out waiting for Google Drive confirmation.");
 }
 
@@ -299,9 +323,13 @@ async function onSubmit() {
   const payload = buildPayload();
   const safeName = (evaluatorName || "unknown").replace(/[^\w一-鿿-]/g, "_");
   const ts = new Date().toISOString().replace(/[:.]/g, "-");
-  const submissionId = `exp3_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-  // Apps Script 端的 doPost 預期 {fileName, content} 這個包裝格式
-  const wrapped = { submissionId, fileName: `exp3_${safeName}_${ts}.json`, content: payload };
+  const submissionId = `exp3_q2_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+  // Apps Script 端的 doPost 預期 {fileName, content, submissionId} 格式（與 Q4 相同）
+  const wrapped = {
+    submissionId,
+    fileName: `exp3_q2_${safeName}_${ts}.json`,
+    content: payload,
+  };
 
   statusEl.textContent = "送出中...";
   submitBtn.disabled = true;
