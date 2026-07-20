@@ -94,6 +94,23 @@ function currentFormValues() {
   };
 }
 
+function isTruncated(text) {
+  if (!text) return false;
+  const last = text.trimEnd().slice(-1);
+  return !'。！？」…"、)）.!?'.includes(last);
+}
+
+function setAnswerText(elId, text) {
+  const el = document.getElementById(elId);
+  el.textContent = cleanText(text);
+  if (isTruncated(text)) {
+    const note = document.createElement("span");
+    note.textContent = "⚠ 此回答達到字數上限，內容可能不完整";
+    note.style.cssText = "display:block;margin-top:8px;font-size:0.82rem;color:#b45309;font-style:italic;";
+    el.appendChild(note);
+  }
+}
+
 function onFormChange() {
   const item = ITEMS[currentIndex];
   responses[item.comparison_id] = currentFormValues();
@@ -131,8 +148,8 @@ function renderItem(index) {
   }
 
   document.getElementById("question-text").textContent = item.question_text;
-  document.getElementById("answer-a").textContent = cleanText(item.answer_a);
-  document.getElementById("answer-b").textContent = cleanText(item.answer_b);
+  setAnswerText("answer-a", item.answer_a);
+  setAnswerText("answer-b", item.answer_b);
 
   const form = document.getElementById("criteria-form");
   form.reset();
