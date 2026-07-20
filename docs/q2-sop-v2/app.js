@@ -65,14 +65,16 @@ function buildStageTableHTML() {
 
 function renderStageTable() {
   const html = buildStageTableHTML();
-  const introTable = document.getElementById("intro-stage-table");
-  const modalTable = document.getElementById("modal-stage-table");
-  if (introTable) introTable.innerHTML = html;
-  if (modalTable) modalTable.innerHTML = html;
-  const introNote = document.getElementById("intro-stage-table-note");
-  const modalNote = document.getElementById("modal-stage-table-note");
-  if (introNote) introNote.textContent = STAGE_TABLE_NOTE;
-  if (modalNote) modalNote.textContent = STAGE_TABLE_NOTE;
+  const tables = ["intro-stage-table", "modal-stage-table", "fixed-stage-table"];
+  const notes = ["intro-stage-table-note", "modal-stage-table-note", "fixed-stage-table-note"];
+  tables.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  });
+  notes.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = STAGE_TABLE_NOTE;
+  });
 }
 
 function updateStickyOffset() {

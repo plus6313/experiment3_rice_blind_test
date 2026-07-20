@@ -161,6 +161,64 @@
       0%, 100% { box-shadow: 0 4px 16px rgba(180,83,9,0.35); }
       50% { box-shadow: 0 4px 24px rgba(180,83,9,0.7); }
     }
+
+    /* ---- v2 新增：桌面版左下角常駐生育階段對照表面板 ----
+       寬螢幕下左下角通常是空的，直接把對照表固定顯示在那裡，
+       比要點按鈕才彈出更方便隨時對照；手機窄螢幕改用原本的
+       懸浮按鈕＋彈出視窗（左下角空間不夠）。 */
+    .fixed-stage-panel { display: none; }
+    @media (min-width: 1000px) {
+      .fixed-stage-panel {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        bottom: 16px;
+        left: 16px;
+        width: 340px;
+        max-height: 55vh;
+        background: #fff;
+        border: 1px solid #e2e2dc;
+        border-radius: 10px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+        z-index: 80;
+        overflow: hidden;
+      }
+      .fixed-stage-panel-header {
+        background: #b45309;
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.88rem;
+        padding: 8px 12px;
+        flex-shrink: 0;
+      }
+      .fixed-stage-panel-body {
+        padding: 8px 10px 12px;
+        overflow-y: auto;
+      }
+      .fixed-stage-panel-body table {
+        font-size: 0.72rem;
+        border-collapse: collapse;
+        width: 100%;
+      }
+      .fixed-stage-panel-body th,
+      .fixed-stage-panel-body td {
+        border: 1px solid #e2e2dc;
+        padding: 4px 5px;
+        text-align: left;
+        vertical-align: top;
+      }
+      .fixed-stage-panel-body th { background: #f6f5f0; }
+      .fixed-stage-panel-body .stage-table-note {
+        font-size: 0.7rem;
+        margin-top: 8px;
+        color: #777;
+      }
+      /* 寬螢幕改用左下角常駐面板，隱藏原本的懸浮按鈕與彈出視窗 */
+      .stage-table-btn,
+      .stage-table-overlay {
+        display: none !important;
+      }
+    }
     .stage-table-overlay {
       display: none;
       position: fixed;
@@ -656,7 +714,7 @@
   <div class="jump-list" id="jump-list"></div>
 </div>
 
-<!-- ===== 生育階段對照表：懸浮按鈕 + 彈出面板（評測畫面全程可用）===== -->
+<!-- ===== 生育階段對照表：手機版懸浮按鈕 + 彈出面板 ===== -->
 <button id="btn-stage-table" class="stage-table-btn" type="button">📖 點我查看生育階段對照表</button>
 
 <div id="stage-table-overlay" class="stage-table-overlay">
@@ -669,6 +727,15 @@
       <table id="modal-stage-table"></table>
       <p class="stage-table-note" id="modal-stage-table-note"></p>
     </div>
+  </div>
+</div>
+
+<!-- ===== 生育階段對照表：桌面版左下角常駐面板 ===== -->
+<div id="fixed-stage-panel" class="fixed-stage-panel">
+  <div class="fixed-stage-panel-header">📖 生育階段對照表</div>
+  <div class="fixed-stage-panel-body">
+    <table id="fixed-stage-table"></table>
+    <p class="stage-table-note" id="fixed-stage-table-note"></p>
   </div>
 </div>
 
