@@ -126,6 +126,7 @@ function renderItem(index) {
 
   document.getElementById("ctx-field").textContent = `田區 ${item.field_id}`;
   document.getElementById("ctx-date").textContent = item.date;
+  document.getElementById("ctx-hour").textContent = item.capture_hour != null ? item.capture_hour : "—";
   document.getElementById("ctx-variety").textContent = item.variety;
 
   // GT 參考資訊（讓評測者能驗證 Accuracy / Reasoning）
