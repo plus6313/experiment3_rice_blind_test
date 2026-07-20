@@ -84,6 +84,20 @@ function updateStickyOffset() {
   }
 }
 
+// 左下角常駐對照表面板：高度跟著選項A（第一個 .answer-col）的實際
+// 底部位置動態調整，永遠只佔選項A底下剩餘的空間，不會固定卡死或
+// 跟選項A重疊。桌面版（≥1000px）才生效，手機版面板本來就是隱藏的。
+function updateStagePanelPosition() {
+  const panel = document.getElementById("fixed-stage-panel");
+  if (!panel || window.innerWidth < 1000) return;
+  const answerColA = document.querySelector(".answer-col");
+  if (!answerColA || answerColA.offsetParent === null) return;
+  const rect = answerColA.getBoundingClientRect();
+  const gap = 12;
+  const top = Math.max(rect.bottom + gap, 0);
+  panel.style.top = `${top}px`;
+}
+
 // 五個維度 × (A, B) 的分數欄位
 const SCORE_FIELDS = [
   "criterion_1_accuracy_a", "criterion_1_accuracy_b",
@@ -114,6 +128,7 @@ function showScreen(name) {
   const fixedPanel = document.getElementById("fixed-stage-panel");
   if (fixedPanel) {
     fixedPanel.style.display = name === "question" ? "" : "none";
+    if (name === "question") requestAnimationFrame(updateStagePanelPosition);
   }
 }
 
@@ -247,6 +262,7 @@ function renderItem(index) {
   updateAnsweredHint();
   window.scrollTo(0, 0);
   requestAnimationFrame(updateStickyOffset);
+  requestAnimationFrame(updateStagePanelPosition);
 }
 
 function updateAnsweredHint() {
@@ -518,6 +534,10 @@ async function init() {
 
   // 頂部固定列高度會隨內容（GT文字長度）變動，監聽視窗大小改變時重新量測
   window.addEventListener("resize", updateStickyOffset);
+  window.addEventListener("resize", updateStagePanelPosition);
+  // 選項A在捲動過程中會經歷「一般排版」到「sticky吸頂」的轉換，
+  // 底部位置會跟著變化，捲動時也要重新量測面板位置
+  window.addEventListener("scroll", () => requestAnimationFrame(updateStagePanelPosition), { passive: true });
 
   showScreen("intro");
 }

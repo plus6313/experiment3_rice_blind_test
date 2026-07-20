@@ -172,10 +172,12 @@
         display: flex;
         flex-direction: column;
         position: fixed;
+        /* top 由 JS 動態設定為「選項A底部＋間距」，
+           搭配下方固定的 bottom，讓面板剛好填滿選項A底下剩餘的空間 */
+        top: 400px;
         bottom: 16px;
         left: 16px;
         width: 680px;
-        max-height: 55vh;
         background: #fff;
         border: 1px solid #e2e2dc;
         border-radius: 10px;
