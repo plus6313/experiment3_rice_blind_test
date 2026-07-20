@@ -110,7 +110,17 @@ function renderItem(index) {
   document.getElementById("ctx-field").textContent = `田區 ${item.field_id}`;
   document.getElementById("ctx-date").textContent = item.date;
   document.getElementById("ctx-variety").textContent = item.variety;
-  // Q2：不顯示 gt_stage，評測者僅憑圖片判斷
+
+  // GT 參考資訊（讓評測者能驗證 Accuracy / Reasoning）
+  document.getElementById("gt-stage").textContent = item.gt_stage || "—";
+  document.getElementById("gt-days").textContent = item.gt_days != null ? item.gt_days : "—";
+  document.getElementById("gt-transplant").textContent = item.gt_transplant_date || "—";
+  const heightAvg = item.gt_plant_height && item.gt_plant_height["平均"] != null
+    ? item.gt_plant_height["平均"].toFixed(1) : "—";
+  document.getElementById("gt-height").textContent = heightAvg;
+  const leafAvg = item.gt_leaf_color && item.gt_leaf_color["平均"] != null
+    ? item.gt_leaf_color["平均"].toFixed(1) : "—";
+  document.getElementById("gt-leaf").textContent = leafAvg;
 
   const imgEl = document.getElementById("item-image");
   if (item.image) {
