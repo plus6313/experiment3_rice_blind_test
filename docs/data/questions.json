@@ -1,7 +1,7 @@
 ﻿[
     {
         "comparison_id":  "2026041915_02_HG_Q2",
-        "image":  "images/2026041915_02_hg.jpg",
+        "image":  "images/2026041915_02_HG.jpg",
         "field_id":  "02",
         "date":  "4/19",
         "variety":  "臺農71號",
@@ -12,7 +12,7 @@
     },
     {
         "comparison_id":  "2026062411_10_EG_Q2",
-        "image":  "images/2026062411_10_eg.jpg",
+        "image":  "images/2026062411_10_EG.jpg",
         "field_id":  "10",
         "date":  "6/24",
         "variety":  "臺農71號",
@@ -23,7 +23,7 @@
     },
     {
         "comparison_id":  "2026041915_14_CG_Q2",
-        "image":  "images/2026041915_14_cg.jpg",
+        "image":  "images/2026041915_14_CG.jpg",
         "field_id":  "14",
         "date":  "4/19",
         "variety":  "臺農71號",
@@ -34,7 +34,7 @@
     },
     {
         "comparison_id":  "2025060216_06_HG_Q2",
-        "image":  "images/2025060216_06_hg.jpg",
+        "image":  "images/2025060216_06_HG.jpg",
         "field_id":  "06",
         "date":  "6/2",
         "variety":  "桃園7號",
@@ -45,7 +45,7 @@
     },
     {
         "comparison_id":  "2026051017_04_EG_Q2",
-        "image":  "images/2026051017_04_eg.jpg",
+        "image":  "images/2026051017_04_EG.jpg",
         "field_id":  "04",
         "date":  "5/10",
         "variety":  "臺農71號",
@@ -56,7 +56,7 @@
     },
     {
         "comparison_id":  "2026041016_01_EG_Q2",
-        "image":  "images/2026041016_01_eg.jpg",
+        "image":  "images/2026041016_01_EG.jpg",
         "field_id":  "01",
         "date":  "4/10",
         "variety":  "臺農71號",
@@ -67,7 +67,7 @@
     },
     {
         "comparison_id":  "2026040313_01_CG_Q2",
-        "image":  "images/2026040313_01_cg.jpg",
+        "image":  "images/2026040313_01_CG.jpg",
         "field_id":  "01",
         "date":  "4/3",
         "variety":  "臺農71號",
@@ -78,7 +78,7 @@
     },
     {
         "comparison_id":  "2025041211_07_CG_Q2",
-        "image":  "images/2025041211_07_cg.jpg",
+        "image":  "images/2025041211_07_CG.jpg",
         "field_id":  "07",
         "date":  "4/12",
         "variety":  "桃園7號",
@@ -89,7 +89,7 @@
     },
     {
         "comparison_id":  "2026041915_09_EG_Q2",
-        "image":  "images/2026041915_09_eg.jpg",
+        "image":  "images/2026041915_09_EG.jpg",
         "field_id":  "09",
         "date":  "4/19",
         "variety":  "臺農71號",
@@ -100,7 +100,7 @@
     },
     {
         "comparison_id":  "2026032510_11_HG_Q2",
-        "image":  "images/2026032510_11_hg.jpg",
+        "image":  "images/2026032510_11_HG.jpg",
         "field_id":  "11",
         "date":  "3/25",
         "variety":  "臺農71號",
@@ -111,7 +111,7 @@
     },
     {
         "comparison_id":  "2026052509_06_EG_Q2",
-        "image":  "images/2026052509_06_eg.jpg",
+        "image":  "images/2026052509_06_EG.jpg",
         "field_id":  "06",
         "date":  "5/25",
         "variety":  "臺農71號",
@@ -122,7 +122,7 @@
     },
     {
         "comparison_id":  "2026060108_13_HG_Q2",
-        "image":  "images/2026060108_13_hg.jpg",
+        "image":  "images/2026060108_13_HG.jpg",
         "field_id":  "13",
         "date":  "6/1",
         "variety":  "臺農71號",
@@ -133,7 +133,7 @@
     },
     {
         "comparison_id":  "2025061911_02_HG_Q2",
-        "image":  "images/2025061911_02_hg.jpg",
+        "image":  "images/2025061911_02_HG.jpg",
         "field_id":  "02",
         "date":  "6/19",
         "variety":  "桃園7號",
@@ -144,7 +144,7 @@
     },
     {
         "comparison_id":  "2026061608_05_EG_Q2",
-        "image":  "images/2026061608_05_eg.jpg",
+        "image":  "images/2026061608_05_EG.jpg",
         "field_id":  "05",
         "date":  "6/16",
         "variety":  "臺農71號",
@@ -155,7 +155,7 @@
     },
     {
         "comparison_id":  "2023093016_01_EG_Q2",
-        "image":  "images/2023093016_01_eg.jpg",
+        "image":  "images/2023093016_01_EG.jpg",
         "field_id":  "01",
         "date":  "9/30",
         "variety":  "臺梗14號",
@@ -166,7 +166,7 @@
     },
     {
         "comparison_id":  "2023103114_03_EG_Q2",
-        "image":  "images/2023103114_03_eg.jpg",
+        "image":  "images/2023103114_03_EG.jpg",
         "field_id":  "03",
         "date":  "10/31",
         "variety":  "臺梗14號",
@@ -177,7 +177,7 @@
     },
     {
         "comparison_id":  "2025060210_04_EG_Q2",
-        "image":  "images/2025060210_04_eg.jpg",
+        "image":  "images/2025060210_04_EG.jpg",
         "field_id":  "04",
         "date":  "6/2",
         "variety":  "桃園7號",
@@ -188,7 +188,7 @@
     },
     {
         "comparison_id":  "2023102709_02_EG_Q2",
-        "image":  "images/2023102709_02_eg.jpg",
+        "image":  "images/2023102709_02_EG.jpg",
         "field_id":  "02",
         "date":  "10/27",
         "variety":  "臺梗14號",
@@ -199,7 +199,7 @@
     },
     {
         "comparison_id":  "2025060210_01_EG_Q2",
-        "image":  "images/2025060210_01_eg.jpg",
+        "image":  "images/2025060210_01_EG.jpg",
         "field_id":  "01",
         "date":  "6/2",
         "variety":  "桃園7號",
@@ -210,7 +210,7 @@
     },
     {
         "comparison_id":  "2025060211_03_CG_Q2",
-        "image":  "images/2025060211_03_cg.jpg",
+        "image":  "images/2025060211_03_CG.jpg",
         "field_id":  "03",
         "date":  "6/2",
         "variety":  "桃園7號",
@@ -221,7 +221,7 @@
     },
     {
         "comparison_id":  "2026060108_12_HG_Q2",
-        "image":  "images/2026060108_12_hg.jpg",
+        "image":  "images/2026060108_12_HG.jpg",
         "field_id":  "12",
         "date":  "6/1",
         "variety":  "臺農71號",
@@ -232,7 +232,7 @@
     },
     {
         "comparison_id":  "2023101112_02_CG_Q2",
-        "image":  "images/2023101112_02_cg.jpg",
+        "image":  "images/2023101112_02_CG.jpg",
         "field_id":  "02",
         "date":  "10/11",
         "variety":  "臺梗14號",
@@ -243,7 +243,7 @@
     },
     {
         "comparison_id":  "2026040313_22_CG_Q2",
-        "image":  "images/2026040313_22_cg.jpg",
+        "image":  "images/2026040313_22_CG.jpg",
         "field_id":  "22",
         "date":  "4/3",
         "variety":  "臺農71號",
@@ -254,7 +254,7 @@
     },
     {
         "comparison_id":  "2026040313_10_CG_Q2",
-        "image":  "images/2026040313_10_cg.jpg",
+        "image":  "images/2026040313_10_CG.jpg",
         "field_id":  "10",
         "date":  "4/3",
         "variety":  "臺農71號",
@@ -265,7 +265,7 @@
     },
     {
         "comparison_id":  "2026041016_10_CG_Q2",
-        "image":  "images/2026041016_10_cg.jpg",
+        "image":  "images/2026041016_10_CG.jpg",
         "field_id":  "10",
         "date":  "4/10",
         "variety":  "臺農71號",
@@ -276,7 +276,7 @@
     },
     {
         "comparison_id":  "2026042616_16_CG_Q2",
-        "image":  "images/2026042616_16_cg.jpg",
+        "image":  "images/2026042616_16_CG.jpg",
         "field_id":  "16",
         "date":  "4/26",
         "variety":  "臺農71號",
@@ -287,7 +287,7 @@
     },
     {
         "comparison_id":  "2026060108_15_CG_Q2",
-        "image":  "images/2026060108_15_cg.jpg",
+        "image":  "images/2026060108_15_CG.jpg",
         "field_id":  "15",
         "date":  "6/1",
         "variety":  "臺農71號",
@@ -298,7 +298,7 @@
     },
     {
         "comparison_id":  "2026041016_16_EG_Q2",
-        "image":  "images/2026041016_16_eg.jpg",
+        "image":  "images/2026041016_16_EG.jpg",
         "field_id":  "16",
         "date":  "4/10",
         "variety":  "臺農71號",
@@ -309,7 +309,7 @@
     },
     {
         "comparison_id":  "2023082609_02_EG_Q2",
-        "image":  "images/2023082609_02_eg.jpg",
+        "image":  "images/2023082609_02_EG.jpg",
         "field_id":  "02",
         "date":  "8/26",
         "variety":  "臺梗14號",
@@ -320,7 +320,7 @@
     },
     {
         "comparison_id":  "2025061108_05_CG_Q2",
-        "image":  "images/2025061108_05_cg.jpg",
+        "image":  "images/2025061108_05_CG.jpg",
         "field_id":  "05",
         "date":  "6/11",
         "variety":  "桃園7號",
@@ -331,7 +331,7 @@
     },
     {
         "comparison_id":  "2026070317_01_EG_Q2",
-        "image":  "images/2026070317_01_eg.jpg",
+        "image":  "images/2026070317_01_EG.jpg",
         "field_id":  "01",
         "date":  "7/3",
         "variety":  "臺農71號",
@@ -342,7 +342,7 @@
     },
     {
         "comparison_id":  "2026040313_02_EG_Q2",
-        "image":  "images/2026040313_02_eg.jpg",
+        "image":  "images/2026040313_02_EG.jpg",
         "field_id":  "02",
         "date":  "4/3",
         "variety":  "臺農71號",
@@ -353,7 +353,7 @@
     },
     {
         "comparison_id":  "2025070809_04_CG_Q2",
-        "image":  "images/2025070809_04_cg.jpg",
+        "image":  "images/2025070809_04_CG.jpg",
         "field_id":  "04",
         "date":  "7/8",
         "variety":  "桃園7號",
@@ -364,7 +364,7 @@
     },
     {
         "comparison_id":  "2023111116_03_EG_Q2",
-        "image":  "images/2023111116_03_eg.jpg",
+        "image":  "images/2023111116_03_EG.jpg",
         "field_id":  "03",
         "date":  "11/11",
         "variety":  "臺梗14號",
@@ -375,7 +375,7 @@
     },
     {
         "comparison_id":  "2026070317_15_HG_Q2",
-        "image":  "images/2026070317_15_hg.jpg",
+        "image":  "images/2026070317_15_HG.jpg",
         "field_id":  "15",
         "date":  "7/3",
         "variety":  "臺農71號",
@@ -386,7 +386,7 @@
     },
     {
         "comparison_id":  "2026042616_01_HG_Q2",
-        "image":  "images/2026042616_01_hg.jpg",
+        "image":  "images/2026042616_01_HG.jpg",
         "field_id":  "01",
         "date":  "4/26",
         "variety":  "臺農71號",
@@ -397,7 +397,7 @@
     },
     {
         "comparison_id":  "2026032510_41_CG_Q2",
-        "image":  "images/2026032510_41_cg.jpg",
+        "image":  "images/2026032510_41_CG.jpg",
         "field_id":  "41",
         "date":  "3/25",
         "variety":  "臺農71號",
@@ -408,7 +408,7 @@
     },
     {
         "comparison_id":  "2023111408_02_CG_Q2",
-        "image":  "images/2023111408_02_cg.jpg",
+        "image":  "images/2023111408_02_CG.jpg",
         "field_id":  "02",
         "date":  "11/14",
         "variety":  "臺梗14號",
@@ -419,7 +419,7 @@
     },
     {
         "comparison_id":  "2023111116_02_CG_Q2",
-        "image":  "images/2023111116_02_cg.jpg",
+        "image":  "images/2023111116_02_CG.jpg",
         "field_id":  "02",
         "date":  "11/11",
         "variety":  "臺梗14號",
@@ -430,7 +430,7 @@
     },
     {
         "comparison_id":  "2026040313_14_EG_Q2",
-        "image":  "images/2026040313_14_eg.jpg",
+        "image":  "images/2026040313_14_EG.jpg",
         "field_id":  "14",
         "date":  "4/3",
         "variety":  "臺農71號",
@@ -441,7 +441,7 @@
     },
     {
         "comparison_id":  "2023092616_03_CG_Q2",
-        "image":  "images/2023092616_03_cg.jpg",
+        "image":  "images/2023092616_03_CG.jpg",
         "field_id":  "03",
         "date":  "9/26",
         "variety":  "臺梗14號",
@@ -452,7 +452,7 @@
     },
     {
         "comparison_id":  "2023093008_03_CG_Q2",
-        "image":  "images/2023093008_03_cg.jpg",
+        "image":  "images/2023093008_03_CG.jpg",
         "field_id":  "03",
         "date":  "9/30",
         "variety":  "臺梗14號",
@@ -463,7 +463,7 @@
     },
     {
         "comparison_id":  "2026050316_03_HG_Q2",
-        "image":  "images/2026050316_03_hg.jpg",
+        "image":  "images/2026050316_03_HG.jpg",
         "field_id":  "03",
         "date":  "5/3",
         "variety":  "臺農71號",
@@ -474,7 +474,7 @@
     },
     {
         "comparison_id":  "2026062411_06_HG_Q2",
-        "image":  "images/2026062411_06_hg.jpg",
+        "image":  "images/2026062411_06_HG.jpg",
         "field_id":  "06",
         "date":  "6/24",
         "variety":  "臺農71號",
@@ -485,7 +485,7 @@
     },
     {
         "comparison_id":  "2026060817_02_CG_Q2",
-        "image":  "images/2026060817_02_cg.jpg",
+        "image":  "images/2026060817_02_CG.jpg",
         "field_id":  "02",
         "date":  "6/8",
         "variety":  "臺農71號",
@@ -496,7 +496,7 @@
     },
     {
         "comparison_id":  "2026060108_14_HG_Q2",
-        "image":  "images/2026060108_14_hg.jpg",
+        "image":  "images/2026060108_14_HG.jpg",
         "field_id":  "14",
         "date":  "6/1",
         "variety":  "臺農71號",
@@ -507,7 +507,7 @@
     },
     {
         "comparison_id":  "2026060817_05_HG_Q2",
-        "image":  "images/2026060817_05_hg.jpg",
+        "image":  "images/2026060817_05_HG.jpg",
         "field_id":  "05",
         "date":  "6/8",
         "variety":  "臺農71號",
@@ -518,7 +518,7 @@
     },
     {
         "comparison_id":  "2025051612_05_HG_Q2",
-        "image":  "images/2025051612_05_hg.jpg",
+        "image":  "images/2025051612_05_HG.jpg",
         "field_id":  "05",
         "date":  "5/16",
         "variety":  "桃園7號",
@@ -529,7 +529,7 @@
     },
     {
         "comparison_id":  "2026070317_12_EG_Q2",
-        "image":  "images/2026070317_12_eg.jpg",
+        "image":  "images/2026070317_12_EG.jpg",
         "field_id":  "12",
         "date":  "7/3",
         "variety":  "臺農71號",
@@ -540,7 +540,7 @@
     },
     {
         "comparison_id":  "2026061608_03_HG_Q2",
-        "image":  "images/2026061608_03_hg.jpg",
+        "image":  "images/2026061608_03_HG.jpg",
         "field_id":  "03",
         "date":  "6/16",
         "variety":  "臺農71號",
