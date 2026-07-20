@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>水稻 Q2 視覺判讀 盲測評測</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+<!-- ===== 開始畫面 ===== -->
+<div id="screen-intro" class="screen">
+  <h1>水稻 Q2 視覺判讀 盲測評測</h1>
+  <p>
+    本次評測共 <strong>50 題</strong>，每題提供一張稻田照片，以及兩個 AI 系統的生育階段判讀回答（選項 A 與選項 B）。
+    請依據回答品質，從以下五個面向給分，並給出整體判斷。<br />
+    <strong>注意：</strong>照片即為唯一資訊來源，請勿依賴其他外部知識猜測模型身份。
+  </p>
+  <p>
+    評測進度會自動儲存在此瀏覽器，中途關閉後可再次開啟並繼續。
+  </p>
+  <label><strong>您的姓名：</strong></label>
+  <input type="text" id="evaluator-name" placeholder="請輸入姓名" autocomplete="name" />
+  <div id="resume-hint" class="hint" style="display:none;"></div>
+  <button id="btn-start">開始評測</button>
+</div>
+
+<!-- ===== 評測畫面 ===== -->
+<div id="screen-question" class="screen">
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="progress-label" id="progress-label"></div>
+
+  <!-- 情境資訊 -->
+  <div class="context-box">
+    田區：<span id="ctx-field"></span>
+    日期：<span id="ctx-date"></span>
+    品種：<span id="ctx-variety"></span>
+  </div>
+
+  <!-- 照片 -->
+  <img id="item-image" class="item-image" src="" alt="稻田照片" />
+
+  <!-- 題目 -->
+  <div class="question-box" id="question-text"></div>
+
+  <!-- 兩個回答並排 -->
+  <div class="answers">
+    <div class="answer-card">
+      <h3>選項 A</h3>
+      <div class="answer-text" id="answer-a"></div>
+    </div>
+    <div class="answer-card">
+      <h3>選項 B</h3>
+      <div class="answer-text" id="answer-b"></div>
+    </div>
+  </div>
+
+  <!-- 評分表單 -->
+  <form id="criteria-form">
+
+    <div class="criterion">
+      <p><strong>1. 正確性（Accuracy）</strong><br />
+         答案與照片視覺線索是否吻合？有無明顯錯誤的生育階段判斷？</p>
+      <div class="radio-row">
+        <label><input type="radio" name="criterion_1_accuracy" value="A_better" />A 較好</label>
+        <label><input type="radio" name="criterion_1_accuracy" value="B_better" />B 較好</label>
+        <label><input type="radio" name="criterion_1_accuracy" value="tie"      />平手或無法判斷</label>
+      </div>
+    </div>
+
+    <div class="criterion">
+      <p><strong>2. 推理一致性（Reasoning）</strong><br />
+         從觀察到結論的邏輯鏈是否自洽？例如判斷為「孕穗期」後，後續說明是否與此階段相符？</p>
+      <div class="radio-row">
+        <label><input type="radio" name="criterion_2_reasoning" value="A_better" />A 較好</label>
+        <label><input type="radio" name="criterion_2_reasoning" value="B_better" />B 較好</label>
+        <label><input type="radio" name="criterion_2_reasoning" value="tie"      />平手或無法判斷</label>
+      </div>
+    </div>
+
+    <div class="criterion">
+      <p><strong>3. 農業深度（Depth）</strong><br />
+         是否展現水稻栽培的專業知識？能否從照片線索（株高、葉色、穗形）辨識生育狀況，而非泛泛而談？</p>
+      <div class="radio-row">
+        <label><input type="radio" name="criterion_3_depth" value="A_better" />A 較好</label>
+        <label><input type="radio" name="criterion_3_depth" value="B_better" />B 較好</label>
+        <label><input type="radio" name="criterion_3_depth" value="tie"      />平手或無法判斷</label>
+      </div>
+    </div>
+
+    <div class="criterion">
+      <p><strong>4. 可操作性（Actionability）</strong><br />
+         Q2 的階段判斷是否有實務參考價值？判斷依據是否具體，農民或研究人員可據此採取行動？</p>
+      <div class="radio-row">
+        <label><input type="radio" name="criterion_4_actionability" value="A_better" />A 較好</label>
+        <label><input type="radio" name="criterion_4_actionability" value="B_better" />B 較好</label>
+        <label><input type="radio" name="criterion_4_actionability" value="tie"      />平手或無法判斷</label>
+      </div>
+    </div>
+
+    <div class="criterion">
+      <p><strong>5. 完整性（Completeness）</strong><br />
+         是否完整回答題目的每一個子問題（判斷依據、不確定之處）？是否涵蓋重要注意事項？</p>
+      <div class="radio-row">
+        <label><input type="radio" name="criterion_5_completeness" value="A_better" />A 較好</label>
+        <label><input type="radio" name="criterion_5_completeness" value="B_better" />B 較好</label>
+        <label><input type="radio" name="criterion_5_completeness" value="tie"      />平手或無法判斷</label>
+      </div>
+    </div>
+
+    <div class="criterion overall">
+      <p><strong>整體判斷</strong><br />
+         綜合以上五個面向，整體來說哪個回答比較好？</p>
+      <div class="radio-row">
+        <label><input type="radio" name="overall_verdict" value="A_better" />A 較好</label>
+        <label><input type="radio" name="overall_verdict" value="B_better" />B 較好</label>
+        <label><input type="radio" name="overall_verdict" value="tie"      />平手或無法判斷</label>
+      </div>
+    </div>
+
+    <div class="criterion">
+      <p><strong>補充意見（選填）</strong></p>
+      <textarea id="comment" rows="3" placeholder="有任何補充說明可在此填寫…"></textarea>
+    </div>
+
+  </form>
+
+  <div class="nav-row">
+    <button id="btn-prev" class="secondary">← 上一題</button>
+    <span id="answered-hint" style="font-size:0.85rem;color:#666;"></span>
+    <button id="btn-next">下一題 →</button>
+  </div>
+  <div style="margin-top:10px;">
+    <button id="btn-early-submit" class="secondary">查看完成進度 / 提前送出</button>
+  </div>
+</div>
+
+<!-- ===== 完成畫面 ===== -->
+<div id="screen-done" class="screen">
+  <h1>評測結果</h1>
+  <p id="done-summary"></p>
+  <button id="btn-submit">送出至雲端</button>
+  <button id="btn-download" class="secondary">下載我的作答備份</button>
+  <p id="submit-status" style="margin-top:12px;font-size:0.9rem;"></p>
+
+  <h2>題目進度總覽</h2>
+  <p style="font-size:0.85rem;color:#666;">綠色 = 已完成；橘色 = 未完成，點選可跳回該題</p>
+  <div class="jump-list" id="jump-list"></div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
