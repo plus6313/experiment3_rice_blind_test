@@ -246,9 +246,9 @@
         <summary>查看評分標準與範例</summary>
         <ul>
           <li><strong>3分</strong>：明確且正確講出生育階段（與 GT 完全相符）</li>
-          <li><strong>2分</strong>：只命中鄰近區間，或給出範圍且 GT 落在其中</li>
-          <li><strong>1分</strong>：誠實表達不確定性，方向合理但未明確給出判斷</li>
-          <li><strong>0分</strong>：判斷錯誤或有明顯幻覺</li>
+          <li><strong>2分</strong>：講出的階段包含正確答案但不精確——只命中鄰近區間，或明確給出一個範圍（例如「XX期至OO期之間」）且 GT 落在該範圍內</li>
+          <li><strong>1分</strong>：誠實表達不確定性，未明確給出單一判斷或範圍，但方向合理</li>
+          <li><strong>0分</strong>：判斷錯誤或有明顯幻覺（描述圖中不存在的視覺特徵）</li>
         </ul>
       </details>
       <div class="score-grid">
@@ -273,11 +273,17 @@
       <div class="criterion-header"><strong>2. 推理一致性（Reasoning）</strong></div>
       <details class="rubric-detail">
         <summary>查看評分標準與範例</summary>
+        <p style="color:#666;margin:4px 0 8px;">評分時要同時檢查：(1) 從觀察到結論的邏輯鏈是否自洽 (2) 這些觀察本身是否真的對應到照片內容。只滿足(1)、不滿足(2)，仍應給低分。</p>
         <ul>
-          <li><strong>3分</strong>：邏輯自洽，且視覺特徵能在照片中驗證為真</li>
-          <li><strong>2分</strong>：大致自洽，但推理鏈較薄弱或有跳躍</li>
-          <li><strong>1分</strong>：邏輯有瑕疵或矛盾，但觀察大致符合照片</li>
-          <li><strong>0分</strong>：視覺特徵與照片實際內容不符（含隱蔽幻覺：整套觀察對應到錯誤階段）</li>
+          <li><strong>3分</strong>：邏輯鏈完全自洽，且引用的視覺特徵都能在照片中驗證為真
+            <span class="ex">範例：「判斷為孕穗期，因為葉鞘已明顯膨大、尚未抽穗」——照片中確實可見葉鞘膨大。</span>
+          </li>
+          <li><strong>2分</strong>：邏輯大致自洽、觀察也大致符合照片，但推理鏈較薄弱或有跳躍</li>
+          <li><strong>1分</strong>：邏輯有明顯瑕疵或前後矛盾，但引用的觀察本身大致符合照片內容，只是結論沒有妥善銜接</li>
+          <li><strong>0分</strong>：引用的視覺特徵與照片實際內容不符——無論是徹底捏造，或是描述的特徵屬於另一個完全不同的階段而與本照片不符
+            <span class="ex">範例A（明顯幻覺）：圖中沒有抽穗跡象，卻描述「可見部分稻穗已抽出且顏色轉黃」。<br />
+            範例B（隱蔽幻覺）：GT為黃熟期（穗已下垂轉黃），答案卻判斷為成活期，並描述「植株矮小、尚未分蘗、水層淺」——這段描述內部邏輯自洽，但完全不符合黃熟期照片的實際內容，仍屬於觀察與照片不符，應評為0分。</span>
+          </li>
         </ul>
       </details>
       <div class="score-grid">
@@ -303,10 +309,14 @@
       <details class="rubric-detail">
         <summary>查看評分標準與範例</summary>
         <ul>
-          <li><strong>3分</strong>：具體點出多個視覺線索並準確連結到判斷</li>
-          <li><strong>2分</strong>：有具體視覺線索，但連結較弱</li>
-          <li><strong>1分</strong>：僅籠統敘述，缺乏具體線索</li>
-          <li><strong>0分</strong>：完全空泛，未展現農業知識</li>
+          <li><strong>3分</strong>：具體點出多個視覺線索（株高、葉色、穗形等）並準確連結到生育階段判斷
+            <span class="ex">範例：「株高約80cm、葉色濃綠、葉鞘膨大但尚未抽穗——綜合這些特徵判斷為孕穗期。」</span>
+          </li>
+          <li><strong>2分</strong>：有提到具體視覺線索，但連結較弱或不夠精準</li>
+          <li><strong>1分</strong>：僅有籠統敘述，缺乏具體視覺線索佐證
+            <span class="ex">範例：「看起來生長狀況良好，應該處於中期生育階段。」——沒有提到任何可觀察特徵。</span>
+          </li>
+          <li><strong>0分</strong>：完全空泛，沒有展現任何農業知識</li>
         </ul>
       </details>
       <div class="score-grid">
@@ -332,9 +342,13 @@
       <details class="rubric-detail">
         <summary>查看評分標準與範例</summary>
         <ul>
-          <li><strong>3分</strong>：具體、可直接執行的判斷依據或建議</li>
-          <li><strong>2分</strong>：有具體建議但需要進一步解讀</li>
-          <li><strong>1分</strong>：建議模糊籠統（如「加強管理」）</li>
+          <li><strong>3分</strong>：給出具體、可直接執行的判斷依據或建議
+            <span class="ex">範例：「建議近期觀察莖基部是否開始拔節，並確認幼穗是否已分化，以確認是否進入下一階段。」</span>
+          </li>
+          <li><strong>2分</strong>：有具體建議但不夠明確，需要進一步解讀才能執行</li>
+          <li><strong>1分</strong>：建議模糊籠統
+            <span class="ex">範例：「請加強田間管理」、「注意栽培細節」——沒有指向任何具體動作。</span>
+          </li>
           <li><strong>0分</strong>：沒有任何實務參考價值</li>
         </ul>
       </details>
@@ -360,11 +374,18 @@
       <div class="criterion-header"><strong>5. 完整性（Completeness）</strong></div>
       <details class="rubric-detail">
         <summary>查看評分標準與範例</summary>
+        <p style="color:#666;margin:4px 0 8px;">Q2 題目要求回答「判斷依據」+「不確定之處」兩個子問題。</p>
         <ul>
-          <li><strong>3分</strong>：完整回答判斷依據＋不確定之處，且涵蓋重要注意事項</li>
-          <li><strong>2分</strong>：回答大部分但有缺漏</li>
-          <li><strong>1分</strong>：只回答部分子問題</li>
-          <li><strong>0分</strong>：幾乎沒有實質回答子問題</li>
+          <li><strong>3分</strong>：完整回答兩個子問題，且有指出重要注意事項（如光線、拍攝角度、單張照片限制等）</li>
+          <li><strong>2分</strong>：回答了大部分但有缺漏
+            <span class="ex">範例：詳細講了判斷依據，但「不確定之處」只草草帶過一句「可能有誤差」。</span>
+          </li>
+          <li><strong>1分</strong>：只回答了部分子問題
+            <span class="ex">範例：只給出結論，沒有詳細判斷依據，也完全沒提不確定性。</span>
+          </li>
+          <li><strong>0分</strong>：幾乎沒有實質回答子問題
+            <span class="ex">範例：只回答「這是分蘗期」，沒有任何依據或說明。</span>
+          </li>
         </ul>
       </details>
       <div class="score-grid">
