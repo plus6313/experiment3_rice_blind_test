@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>水稻 Q2 視覺判讀 盲測評測（SOP 評分版）</title>
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    /* ---- SOP 評分版專用樣式（不影響 /q2/ 與 /) ---- */
+    .rubric-detail {
+      margin: 8px 0 4px;
+      font-size: 0.85rem;
+      color: #444;
+      background: #f6f5f0;
+      border: 1px solid #e2e2dc;
+      border-radius: 6px;
+      padding: 6px 10px;
+    }
+    .rubric-detail summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: #2f7a3d;
+      list-style: none;
+    }
+    .rubric-detail summary::-webkit-details-marker { display: none; }
+    .rubric-detail summary::before {
+      content: "▸ ";
+    }
+    .rubric-detail[open] summary::before {
+      content: "▾ ";
+    }
+    .rubric-detail ul {
+      margin: 8px 0 2px;
+      padding-left: 18px;
+    }
+    .rubric-detail li {
+      margin-bottom: 6px;
+      line-height: 1.5;
+    }
+    .rubric-detail .ex {
+      color: #777;
+      font-style: italic;
+    }
+    .score-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .score-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .score-row .score-label {
+      font-weight: 600;
+      width: 60px;
+      flex-shrink: 0;
+    }
+    .score-row label {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      cursor: pointer;
+      padding: 3px 8px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background: #fff;
+    }
+    .score-row input[type="radio"]:checked + span,
+    .score-row label:has(input:checked) {
+      background: #eefbf0;
+      border-color: #2f7a3d;
+    }
+    .criterion-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .intro-rubric-block {
+      margin-bottom: 14px;
+    }
+    .intro-rubric-block > summary {
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1.02rem;
+      color: #2f7a3d;
+      padding: 8px 0;
+    }
+    .intro-rubric-block ul {
+      padding-left: 20px;
+    }
+    .intro-rubric-block li {
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+    .intro-rubric-block .ex {
+      color: #777;
+      font-style: italic;
+      display: block;
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== 開始畫面 ===== -->
+<div id="screen-intro" class="screen">
+  <h1>水稻 Q2 視覺判讀 盲測評測（SOP 評分版）</h1>
+  <p>
+    本次評測共 <strong>50 題</strong>，每題提供一張稻田照片，以及兩個 AI 系統的生育階段判讀回答（選項 A 與選項 B）。<br />
+    <strong>評分方式：</strong>針對以下五個面向，分別為 A、B 各自評 <strong>0～3 分</strong>（不是比較 A、B 誰好，而是各自對照評分標準獨立評分），
+    最後再給一個綜合的整體判斷。<br />
+    <strong>注意：</strong>照片與下方提供的參考答案（GT）即為判斷依據，請勿依賴其他外部知識猜測模型身份。
+  </p>
+  <p>評測進度會自動儲存在此瀏覽器，中途關閉後可再次開啟並繼續。</p>
+
+  <h2 style="margin-top:24px;">評分標準說明（請詳細閱讀一次，之後每題可展開快速複習）</h2>
+
+  <details class="intro-rubric-block" open>
+    <summary>1. 正確性（Accuracy）</summary>
+    <ul>
+      <li><strong>3分</strong>：明確且正確講出生育階段（與 GT 完全相符）</li>
+      <li><strong>2分</strong>：講出的階段包含正確答案但不精確——只命中鄰近區間，或明確給出一個範圍（例如「XX期至OO期之間」）且 GT 落在該範圍內</li>
+      <li><strong>1分</strong>：誠實表達不確定性，未明確給出單一判斷或範圍，但方向合理</li>
+      <li><strong>0分</strong>：判斷錯誤或有明顯幻覺（描述圖中不存在的視覺特徵）</li>
+    </ul>
+  </details>
+
+  <details class="intro-rubric-block" open>
+    <summary>2. 推理一致性（Reasoning）</summary>
+    <p style="font-size:0.9rem;color:#666;margin:4px 0 8px;">評分時要同時檢查：(1) 從觀察到結論的邏輯鏈是否自洽 (2) 這些觀察本身是否真的對應到照片內容。只滿足(1)、不滿足(2)，仍應給低分。</p>
+    <ul>
+      <li><strong>3分</strong>：邏輯鏈完全自洽，且引用的視覺特徵都能在照片中驗證為真
+        <span class="ex">範例：「判斷為孕穗期，因為葉鞘已明顯膨大、尚未抽穗」——照片中確實可見葉鞘膨大。</span>
+      </li>
+      <li><strong>2分</strong>：邏輯大致自洽、觀察也大致符合照片，但推理鏈較薄弱或有跳躍</li>
+      <li><strong>1分</strong>：邏輯有明顯瑕疵或前後矛盾，但引用的觀察本身大致符合照片內容，只是結論沒有妥善銜接</li>
+      <li><strong>0分</strong>：引用的視覺特徵與照片實際內容不符——無論是徹底捏造，或是描述的特徵屬於另一個完全不同的階段而與本照片不符
+        <span class="ex">範例A（明顯幻覺）：圖中沒有抽穗跡象，卻描述「可見部分稻穗已抽出且顏色轉黃」。<br />
+        範例B（隱蔽幻覺）：GT為黃熟期（穗已下垂轉黃），答案卻判斷為成活期，並描述「植株矮小、尚未分蘗、水層淺」——這段描述內部邏輯自洽，但完全不符合黃熟期照片的實際內容，仍屬於觀察與照片不符，應評為0分。</span>
+      </li>
+    </ul>
+  </details>
+
+  <details class="intro-rubric-block" open>
+    <summary>3. 農業深度（Depth）</summary>
+    <ul>
+      <li><strong>3分</strong>：具體點出多個視覺線索（株高、葉色、穗形等）並準確連結到生育階段判斷
+        <span class="ex">範例：「株高約80cm、葉色濃綠、葉鞘膨大但尚未抽穗——綜合這些特徵判斷為孕穗期。」</span>
+      </li>
+      <li><strong>2分</strong>：有提到具體視覺線索，但連結較弱或不夠精準</li>
+      <li><strong>1分</strong>：僅有籠統敘述，缺乏具體視覺線索佐證
+        <span class="ex">範例：「看起來生長狀況良好，應該處於中期生育階段。」——沒有提到任何可觀察特徵。</span>
+      </li>
+      <li><strong>0分</strong>：完全空泛，沒有展現任何農業知識</li>
+    </ul>
+  </details>
+
+  <details class="intro-rubric-block" open>
+    <summary>4. 可操作性（Actionability）</summary>
+    <ul>
+      <li><strong>3分</strong>：給出具體、可直接執行的判斷依據或建議
+        <span class="ex">範例：「建議近期觀察莖基部是否開始拔節，並確認幼穗是否已分化，以確認是否進入下一階段。」</span>
+      </li>
+      <li><strong>2分</strong>：有具體建議但不夠明確，需要進一步解讀才能執行</li>
+      <li><strong>1分</strong>：建議模糊籠統
+        <span class="ex">範例：「請加強田間管理」、「注意栽培細節」——沒有指向任何具體動作。</span>
+      </li>
+      <li><strong>0分</strong>：沒有任何實務參考價值</li>
+    </ul>
+  </details>
+
+  <details class="intro-rubric-block" open>
+    <summary>5. 完整性（Completeness）</summary>
+    <p style="font-size:0.9rem;color:#666;margin:4px 0 8px;">Q2 題目要求回答「判斷依據」+「不確定之處」兩個子問題。</p>
+    <ul>
+      <li><strong>3分</strong>：完整回答兩個子問題，且有指出重要注意事項（如光線、拍攝角度、單張照片限制等）</li>
+      <li><strong>2分</strong>：回答了大部分但有缺漏
+        <span class="ex">範例：詳細講了判斷依據，但「不確定之處」只草草帶過一句「可能有誤差」。</span>
+      </li>
+      <li><strong>1分</strong>：只回答了部分子問題
+        <span class="ex">範例：只給出結論，沒有詳細判斷依據，也完全沒提不確定性。</span>
+      </li>
+      <li><strong>0分</strong>：幾乎沒有實質回答子問題
+        <span class="ex">範例：只回答「這是分蘗期」，沒有任何依據或說明。</span>
+      </li>
+    </ul>
+  </details>
+
+  <label><strong>您的姓名：</strong></label>
+  <input type="text" id="evaluator-name" placeholder="請輸入姓名" autocomplete="name" />
+  <div id="resume-hint" class="hint" style="display:none;"></div>
+  <button id="btn-start">開始評測</button>
+</div>
+
+<!-- ===== 評測畫面 ===== -->
+<div id="screen-question" class="screen">
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="progress-label" id="progress-label"></div>
+
+  <!-- 情境資訊 -->
+  <div class="context-box">
+    田區：<span id="ctx-field"></span>
+    日期：<span id="ctx-date"></span>
+    拍攝時間：<span id="ctx-hour"></span> 時
+    品種：<span id="ctx-variety"></span>
+  </div>
+
+  <!-- GT 參考資訊 -->
+  <div class="gt-box" id="gt-box">
+    <strong>參考答案（GT）</strong>：
+    生育階段 <span id="gt-stage"></span>
+    生育日數 <span id="gt-days"></span> 天（插秧 <span id="gt-transplant"></span>）
+    株高平均 <span id="gt-height"></span> cm
+    葉色平均 <span id="gt-leaf"></span>
+  </div>
+
+  <!-- 照片 -->
+  <img id="item-image" class="item-image" src="" alt="稻田照片" />
+
+  <!-- 題目 -->
+  <div class="question-box" id="question-text"></div>
+
+  <!-- 兩個回答並排 -->
+  <div class="answers">
+    <div class="answer-card">
+      <h3>選項 A</h3>
+      <div class="answer-text" id="answer-a"></div>
+    </div>
+    <div class="answer-card">
+      <h3>選項 B</h3>
+      <div class="answer-text" id="answer-b"></div>
+    </div>
+  </div>
+
+  <!-- 評分表單 -->
+  <form id="criteria-form">
+
+    <div class="criterion">
+      <div class="criterion-header"><strong>1. 正確性（Accuracy）</strong></div>
+      <details class="rubric-detail">
+        <summary>查看評分標準與範例</summary>
+        <ul>
+          <li><strong>3分</strong>：明確且正確講出生育階段（與 GT 完全相符）</li>
+          <li><strong>2分</strong>：只命中鄰近區間，或給出範圍且 GT 落在其中</li>
+          <li><strong>1分</strong>：誠實表達不確定性，方向合理但未明確給出判斷</li>
+          <li><strong>0分</strong>：判斷錯誤或有明顯幻覺</li>
+        </ul>
+      </details>
+      <div class="score-grid">
+        <div class="score-row">
+          <span class="score-label">A：</span>
+          <label><input type="radio" name="criterion_1_accuracy_a" value="3" />3</label>
+          <label><input type="radio" name="criterion_1_accuracy_a" value="2" />2</label>
+          <label><input type="radio" name="criterion_1_accuracy_a" value="1" />1</label>
+          <label><input type="radio" name="criterion_1_accuracy_a" value="0" />0</label>
+        </div>
+        <div class="score-row">
+          <span class="score-label">B：</span>
+          <label><input type="radio" name="criterion_1_accuracy_b" value="3" />3</label>
+          <label><input type="radio" name="criterion_1_accuracy_b" value="2" />2</label>
+          <label><input type="radio" name="criterion_1_accuracy_b" value="1" />1</label>
+          <label><input type="radio" name="criterion_1_accuracy_b" value="0" />0</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="criterion">
+      <div class="criterion-header"><strong>2. 推理一致性（Reasoning）</strong></div>
+      <details class="rubric-detail">
+        <summary>查看評分標準與範例</summary>
+        <ul>
+          <li><strong>3分</strong>：邏輯自洽，且視覺特徵能在照片中驗證為真</li>
+          <li><strong>2分</strong>：大致自洽，但推理鏈較薄弱或有跳躍</li>
+          <li><strong>1分</strong>：邏輯有瑕疵或矛盾，但觀察大致符合照片</li>
+          <li><strong>0分</strong>：視覺特徵與照片實際內容不符（含隱蔽幻覺：整套觀察對應到錯誤階段）</li>
+        </ul>
+      </details>
+      <div class="score-grid">
+        <div class="score-row">
+          <span class="score-label">A：</span>
+          <label><input type="radio" name="criterion_2_reasoning_a" value="3" />3</label>
+          <label><input type="radio" name="criterion_2_reasoning_a" value="2" />2</label>
+          <label><input type="radio" name="criterion_2_reasoning_a" value="1" />1</label>
+          <label><input type="radio" name="criterion_2_reasoning_a" value="0" />0</label>
+        </div>
+        <div class="score-row">
+          <span class="score-label">B：</span>
+          <label><input type="radio" name="criterion_2_reasoning_b" value="3" />3</label>
+          <label><input type="radio" name="criterion_2_reasoning_b" value="2" />2</label>
+          <label><input type="radio" name="criterion_2_reasoning_b" value="1" />1</label>
+          <label><input type="radio" name="criterion_2_reasoning_b" value="0" />0</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="criterion">
+      <div class="criterion-header"><strong>3. 農業深度（Depth）</strong></div>
+      <details class="rubric-detail">
+        <summary>查看評分標準與範例</summary>
+        <ul>
+          <li><strong>3分</strong>：具體點出多個視覺線索並準確連結到判斷</li>
+          <li><strong>2分</strong>：有具體視覺線索，但連結較弱</li>
+          <li><strong>1分</strong>：僅籠統敘述，缺乏具體線索</li>
+          <li><strong>0分</strong>：完全空泛，未展現農業知識</li>
+        </ul>
+      </details>
+      <div class="score-grid">
+        <div class="score-row">
+          <span class="score-label">A：</span>
+          <label><input type="radio" name="criterion_3_depth_a" value="3" />3</label>
+          <label><input type="radio" name="criterion_3_depth_a" value="2" />2</label>
+          <label><input type="radio" name="criterion_3_depth_a" value="1" />1</label>
+          <label><input type="radio" name="criterion_3_depth_a" value="0" />0</label>
+        </div>
+        <div class="score-row">
+          <span class="score-label">B：</span>
+          <label><input type="radio" name="criterion_3_depth_b" value="3" />3</label>
+          <label><input type="radio" name="criterion_3_depth_b" value="2" />2</label>
+          <label><input type="radio" name="criterion_3_depth_b" value="1" />1</label>
+          <label><input type="radio" name="criterion_3_depth_b" value="0" />0</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="criterion">
+      <div class="criterion-header"><strong>4. 可操作性（Actionability）</strong></div>
+      <details class="rubric-detail">
+        <summary>查看評分標準與範例</summary>
+        <ul>
+          <li><strong>3分</strong>：具體、可直接執行的判斷依據或建議</li>
+          <li><strong>2分</strong>：有具體建議但需要進一步解讀</li>
+          <li><strong>1分</strong>：建議模糊籠統（如「加強管理」）</li>
+          <li><strong>0分</strong>：沒有任何實務參考價值</li>
+        </ul>
+      </details>
+      <div class="score-grid">
+        <div class="score-row">
+          <span class="score-label">A：</span>
+          <label><input type="radio" name="criterion_4_actionability_a" value="3" />3</label>
+          <label><input type="radio" name="criterion_4_actionability_a" value="2" />2</label>
+          <label><input type="radio" name="criterion_4_actionability_a" value="1" />1</label>
+          <label><input type="radio" name="criterion_4_actionability_a" value="0" />0</label>
+        </div>
+        <div class="score-row">
+          <span class="score-label">B：</span>
+          <label><input type="radio" name="criterion_4_actionability_b" value="3" />3</label>
+          <label><input type="radio" name="criterion_4_actionability_b" value="2" />2</label>
+          <label><input type="radio" name="criterion_4_actionability_b" value="1" />1</label>
+          <label><input type="radio" name="criterion_4_actionability_b" value="0" />0</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="criterion">
+      <div class="criterion-header"><strong>5. 完整性（Completeness）</strong></div>
+      <details class="rubric-detail">
+        <summary>查看評分標準與範例</summary>
+        <ul>
+          <li><strong>3分</strong>：完整回答判斷依據＋不確定之處，且涵蓋重要注意事項</li>
+          <li><strong>2分</strong>：回答大部分但有缺漏</li>
+          <li><strong>1分</strong>：只回答部分子問題</li>
+          <li><strong>0分</strong>：幾乎沒有實質回答子問題</li>
+        </ul>
+      </details>
+      <div class="score-grid">
+        <div class="score-row">
+          <span class="score-label">A：</span>
+          <label><input type="radio" name="criterion_5_completeness_a" value="3" />3</label>
+          <label><input type="radio" name="criterion_5_completeness_a" value="2" />2</label>
+          <label><input type="radio" name="criterion_5_completeness_a" value="1" />1</label>
+          <label><input type="radio" name="criterion_5_completeness_a" value="0" />0</label>
+        </div>
+        <div class="score-row">
+          <span class="score-label">B：</span>
+          <label><input type="radio" name="criterion_5_completeness_b" value="3" />3</label>
+          <label><input type="radio" name="criterion_5_completeness_b" value="2" />2</label>
+          <label><input type="radio" name="criterion_5_completeness_b" value="1" />1</label>
+          <label><input type="radio" name="criterion_5_completeness_b" value="0" />0</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="criterion overall">
+      <p><strong>整體判斷</strong><br />
+         綜合您剛才對五個面向的評分，整體來說哪個回答比較好？</p>
+      <div class="radio-row">
+        <label><input type="radio" name="overall_verdict" value="A_better" />A 較好</label>
+        <label><input type="radio" name="overall_verdict" value="B_better" />B 較好</label>
+        <label><input type="radio" name="overall_verdict" value="tie"      />平手或無法判斷</label>
+      </div>
+    </div>
+
+    <div class="criterion">
+      <p><strong>補充意見（選填）</strong></p>
+      <textarea id="comment" rows="3" placeholder="有任何補充說明可在此填寫…"></textarea>
+    </div>
+
+  </form>
+
+  <div class="nav-row">
+    <button id="btn-prev" class="secondary">← 上一題</button>
+    <span id="answered-hint" style="font-size:0.85rem;color:#666;"></span>
+    <button id="btn-next">下一題 →</button>
+  </div>
+  <div style="margin-top:10px;">
+    <button id="btn-early-submit" class="secondary">查看完成進度 / 提前送出</button>
+  </div>
+</div>
+
+<!-- ===== 完成畫面 ===== -->
+<div id="screen-done" class="screen">
+  <h1>評測結果</h1>
+  <p id="done-summary"></p>
+  <button id="btn-submit">送出至雲端</button>
+  <button id="btn-download" class="secondary">下載我的作答備份</button>
+  <p id="submit-status" style="margin-top:12px;font-size:0.9rem;"></p>
+
+  <h2>題目進度總覽</h2>
+  <p style="font-size:0.85rem;color:#666;">綠色 = 已完成；橘色 = 未完成，點選可跳回該題</p>
+  <div class="jump-list" id="jump-list"></div>
+</div>
+
+<script src="app.js?v=1"></script>
+</body>
+</html>
