@@ -3,9 +3,11 @@ private/
 
 # 從 Google Drive 下載回來的原始評審回覆（含在地端分析即可，不需要上傳）
 collected_responses/*.json
+collected_responses_exp1/*.json
 
 # 分析輸出（本地留存即可）
 results/
+results_exp1/
 
 __pycache__/
 *.pyc
