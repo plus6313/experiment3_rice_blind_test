@@ -289,9 +289,10 @@
 <div id="screen-intro" class="screen">
   <h1>EXP1 人工盲測驗證（實驗室版）</h1>
   <p>
-    本次評測共 <strong>50 題</strong>，每題提供一張稻田照片，以及兩個 AI 系統的生育階段判讀回答（選項 A 與選項 B）。<br />
+    本次評測共 <strong>100 題</strong>（50張照片，各對應生育階段判讀Q2與管理建議Q3兩種題型），每題提供一張稻田照片、參考資訊，以及兩個 AI 系統的回答（選項 A 與選項 B）。<br />
     <strong>評分方式：</strong>針對以下四個面向，分別為 A、B 各自評 <strong>0～3 分</strong>（不是比較 A、B 誰好，而是各自對照評分標準獨立評分），
     最後再給一個綜合的整體判斷。<br />
+    <strong>「不適用」選項：</strong>如果某個維度對這一題的答案確實不適用（例如Q2的生育階段判讀題，答案完全沒有提及任何管理建議，導致無法評「可操作性」），可以選擇「不適用」，這一題的這個維度就不會被計入該維度的統計，不用勉強打分。<br />
     <strong>注意：</strong>本表單不包含「農業深度」這個維度——該維度改由農業專家在獨立的表單評分，因為農業深度需要真正的田間栽培專業知識才能可靠判斷。
     照片與下方提供的參考答案（GT）即為判斷依據，請勿依賴其他外部知識猜測模型身份。
   </p>
@@ -461,6 +462,7 @@
               <label><input type="radio" name="criterion_1_accuracy_a" value="2" />2</label>
               <label><input type="radio" name="criterion_1_accuracy_a" value="1" />1</label>
               <label><input type="radio" name="criterion_1_accuracy_a" value="0" />0</label>
+              <label><input type="radio" name="criterion_1_accuracy_a" value="na" />不適用</label>
             </div>
             <div class="score-row">
               <span class="score-label">B：</span>
@@ -468,6 +470,7 @@
               <label><input type="radio" name="criterion_1_accuracy_b" value="2" />2</label>
               <label><input type="radio" name="criterion_1_accuracy_b" value="1" />1</label>
               <label><input type="radio" name="criterion_1_accuracy_b" value="0" />0</label>
+              <label><input type="radio" name="criterion_1_accuracy_b" value="na" />不適用</label>
             </div>
           </div>
         </div>
@@ -500,6 +503,7 @@
               <label><input type="radio" name="criterion_2_reasoning_a" value="2" />2</label>
               <label><input type="radio" name="criterion_2_reasoning_a" value="1" />1</label>
               <label><input type="radio" name="criterion_2_reasoning_a" value="0" />0</label>
+              <label><input type="radio" name="criterion_2_reasoning_a" value="na" />不適用</label>
             </div>
             <div class="score-row">
               <span class="score-label">B：</span>
@@ -507,6 +511,7 @@
               <label><input type="radio" name="criterion_2_reasoning_b" value="2" />2</label>
               <label><input type="radio" name="criterion_2_reasoning_b" value="1" />1</label>
               <label><input type="radio" name="criterion_2_reasoning_b" value="0" />0</label>
+              <label><input type="radio" name="criterion_2_reasoning_b" value="na" />不適用</label>
             </div>
           </div>
         </div>
@@ -537,6 +542,7 @@
               <label><input type="radio" name="criterion_3_actionability_a" value="2" />2</label>
               <label><input type="radio" name="criterion_3_actionability_a" value="1" />1</label>
               <label><input type="radio" name="criterion_3_actionability_a" value="0" />0</label>
+              <label><input type="radio" name="criterion_3_actionability_a" value="na" />不適用</label>
             </div>
             <div class="score-row">
               <span class="score-label">B：</span>
@@ -544,6 +550,7 @@
               <label><input type="radio" name="criterion_3_actionability_b" value="2" />2</label>
               <label><input type="radio" name="criterion_3_actionability_b" value="1" />1</label>
               <label><input type="radio" name="criterion_3_actionability_b" value="0" />0</label>
+              <label><input type="radio" name="criterion_3_actionability_b" value="na" />不適用</label>
             </div>
           </div>
         </div>
@@ -575,6 +582,7 @@
               <label><input type="radio" name="criterion_4_completeness_a" value="2" />2</label>
               <label><input type="radio" name="criterion_4_completeness_a" value="1" />1</label>
               <label><input type="radio" name="criterion_4_completeness_a" value="0" />0</label>
+              <label><input type="radio" name="criterion_4_completeness_a" value="na" />不適用</label>
             </div>
             <div class="score-row">
               <span class="score-label">B：</span>
@@ -582,6 +590,7 @@
               <label><input type="radio" name="criterion_4_completeness_b" value="2" />2</label>
               <label><input type="radio" name="criterion_4_completeness_b" value="1" />1</label>
               <label><input type="radio" name="criterion_4_completeness_b" value="0" />0</label>
+              <label><input type="radio" name="criterion_4_completeness_b" value="na" />不適用</label>
             </div>
           </div>
         </div>
