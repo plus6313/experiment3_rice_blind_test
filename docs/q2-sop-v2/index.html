@@ -88,6 +88,16 @@
       margin-top: 2px;
     }
 
+    /* ---- v2 新增：放寬版面寬度以容納三欄懸浮設計 ----
+       共用 style.css 把 body 限制在 max-width:900px，三欄懸浮版面
+       在這麼窄的寬度下會被擠壓成一小條，這裡針對本頁面覆蓋放寬。 */
+    body {
+      max-width: 1500px;
+    }
+    @media (min-width: 1000px) {
+      body { max-width: min(1600px, 96vw); }
+    }
+
     /* ---- v2 新增：頂部固定列 ---- */
     .sticky-topbar {
       position: sticky;
@@ -130,13 +140,22 @@
     /* ---- v2 新增：生育階段對照表 懸浮按鈕 + 彈出面板 ---- */
     .stage-table-btn {
       position: fixed;
-      bottom: 18px;
-      right: 18px;
+      bottom: 24px;
+      right: 24px;
       z-index: 120;
       border-radius: 999px;
-      padding: 10px 16px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.25);
-      font-size: 0.9rem;
+      padding: 14px 22px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+      font-size: 1rem;
+      font-weight: 700;
+      background: #b45309;
+      border-color: #b45309;
+      animation: stage-btn-pulse 2.2s ease-in-out infinite;
+    }
+    .stage-table-btn:hover { animation: none; }
+    @keyframes stage-btn-pulse {
+      0%, 100% { box-shadow: 0 4px 16px rgba(180,83,9,0.35); }
+      50% { box-shadow: 0 4px 24px rgba(180,83,9,0.7); }
     }
     .stage-table-overlay {
       display: none;
@@ -199,6 +218,28 @@
     }
     .stage-table-body .early { color: #b45309; }
     .stage-table-body .late  { color: #1d5fa8; }
+
+    /* ---- v2 新增：照片點擊放大（Lightbox）---- */
+    #item-image {
+      cursor: zoom-in;
+    }
+    .image-lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 300;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      cursor: zoom-out;
+    }
+    .image-lightbox.open { display: flex; }
+    .image-lightbox img {
+      max-width: 95vw;
+      max-height: 95vh;
+      border-radius: 6px;
+    }
   </style>
 </head>
 <body>
@@ -365,6 +406,7 @@
     <div class="middle-col">
       <!-- 照片 -->
       <img id="item-image" class="item-image" src="" alt="稻田照片" />
+      <p style="text-align:center;font-size:0.8rem;color:#999;margin:-8px 0 10px;">🔍 點擊照片可放大檢視</p>
 
       <!-- 題目 -->
       <div class="question-box" id="question-text"></div>
@@ -611,7 +653,7 @@
 </div>
 
 <!-- ===== 生育階段對照表：懸浮按鈕 + 彈出面板（評測畫面全程可用）===== -->
-<button id="btn-stage-table" class="stage-table-btn" type="button">📖 生育階段對照表</button>
+<button id="btn-stage-table" class="stage-table-btn" type="button">📖 點我查看生育階段對照表</button>
 
 <div id="stage-table-overlay" class="stage-table-overlay">
   <div class="stage-table-panel">
@@ -626,6 +668,11 @@
   </div>
 </div>
 
-<script src="app.js?v=1"></script>
+<!-- ===== 照片點擊放大 Lightbox ===== -->
+<div id="image-lightbox" class="image-lightbox">
+  <img id="lightbox-img" src="" alt="放大照片" />
+</div>
+
+<script src="app.js?v=2"></script>
 </body>
 </html>

@@ -495,6 +495,18 @@ async function init() {
     });
   }
 
+  // 照片點擊放大 Lightbox
+  const itemImage = document.getElementById("item-image");
+  const lightbox = document.getElementById("image-lightbox");
+  const lightboxImg = document.getElementById("lightbox-img");
+  if (itemImage && lightbox && lightboxImg) {
+    itemImage.addEventListener("click", () => {
+      lightboxImg.src = itemImage.src;
+      lightbox.classList.add("open");
+    });
+    lightbox.addEventListener("click", () => lightbox.classList.remove("open"));
+  }
+
   // 頂部固定列高度會隨內容（GT文字長度）變動，監聽視窗大小改變時重新量測
   window.addEventListener("resize", updateStickyOffset);
 
