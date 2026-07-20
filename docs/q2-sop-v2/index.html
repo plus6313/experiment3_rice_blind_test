@@ -90,12 +90,11 @@
 
     /* ---- v2 新增：放寬版面寬度以容納三欄懸浮設計 ----
        共用 style.css 把 body 限制在 max-width:900px，三欄懸浮版面
-       在這麼窄的寬度下會被擠壓成一小條，這裡針對本頁面覆蓋放寬。 */
+       在這麼窄的寬度下會被擠壓成一小條，這裡針對本頁面覆蓋放寬。
+       改用 vw 為主、不設死值上限，讓寬螢幕（含 4K）能真正按比例
+       使用接近整個畫面寬度，而不是卡在某個固定像素值。 */
     body {
-      max-width: 1500px;
-    }
-    @media (min-width: 1000px) {
-      body { max-width: min(1600px, 96vw); }
+      max-width: 96vw;
     }
 
     /* ---- v2 新增：頂部固定列 ---- */
@@ -125,16 +124,16 @@
         gap: 16px;
       }
       .answer-col {
-        flex: 0 0 clamp(340px, 27vw, 520px);
+        flex: 1 1 0;
+        min-width: 0;
         position: sticky;
         top: calc(var(--topbar-height, 170px) + 10px);
         max-height: calc(100vh - var(--topbar-height, 170px) - 30px);
         overflow-y: auto;
       }
       .middle-col {
-        flex: 1;
+        flex: 1 1 0;
         min-width: 0;
-        max-width: 680px;
       }
       .answer-col .answer-text {
         font-size: 1.08rem;
