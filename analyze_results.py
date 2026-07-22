@@ -54,7 +54,7 @@ OVERALL_LABEL = "總體判定：整體來說，哪個回答比較好？"
 
 def load_mapping():
     mapping = {}
-    with open(config.MAPPING_FILE, encoding="utf-8") as f:
+    with open(config.MAPPING_FILE, encoding="utf-8-sig") as f:
         for line in f:
             line = line.strip()
             if not line:
@@ -67,7 +67,7 @@ def load_mapping():
 def load_questions():
     if not config.SITE_DATA_FILE.exists():
         return {}
-    with open(config.SITE_DATA_FILE, encoding="utf-8") as f:
+    with open(config.SITE_DATA_FILE, encoding="utf-8-sig") as f:
         return {row["comparison_id"]: row for row in json.load(f)}
 
 
@@ -77,7 +77,7 @@ def load_collected():
         return submissions
 
     for path in sorted(config.COLLECTED_DIR.glob("*.json")):
-        with open(path, encoding="utf-8") as f:
+        with open(path, encoding="utf-8-sig") as f:
             data = json.load(f)
         data["_source_file"] = path.name
         submissions.append(data)

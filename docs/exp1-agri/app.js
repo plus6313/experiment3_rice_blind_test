@@ -7,7 +7,7 @@
 //   其餘四個維度（正確性、推理一致性、可操作性、完整性）由資訊背景
 //   評測者在獨立表單（/exp1-lab/）評分。
 //   只有一題，沒有多維度互相污染的月暈效應風險，故用比較式判斷
-//   （A較好/B較好/平手），不用BARS 0~3分絕對評分。
+//   （A較好/B較好/平手/兩者皆不佳），不用BARS 0~3分絕對評分。
 // cleanText() 與 /exp1-lab/ 完全相同（含統一每句斷行處理）。
 // ============================================================================
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyjOWJkuD6u1xlq7iy4vdgLOEB6NV3KHemNoTKmDwEDzHtV4-PhDGJxUz0KPJzaFk91/exec";

@@ -42,7 +42,14 @@ MATCHUP_LABELS = {
     "ft_qwen_vs_gemma": "ft_qwen vs gemma",
 }
 
-VERDICT_LABELS = {"A_better": "A較好", "B_better": "B較好", "tie": "平手", None: "未作答", "": "未作答"}
+VERDICT_LABELS = {
+    "A_better": "A較好",
+    "B_better": "B較好",
+    "tie": "平手",
+    "both_bad": "兩者皆不佳",
+    None: "未作答",
+    "": "未作答",
+}
 
 
 def load_json(path):
@@ -81,9 +88,11 @@ def percent(numerator, denominator):
 
 
 def verdict_to_side(model_at_a, model_at_b, verdict, target_model="ft_qwen"):
-    """把 A_better/B_better/tie 轉成「ft_qwen 贏/輸/平手」"""
+    """把 A_better/B_better/tie/both_bad 轉成「ft_qwen 贏/輸/平手/兩者皆不佳」"""
     if verdict == "tie":
         return "tie"
+    if verdict == "both_bad":
+        return "both_bad"
     if verdict == "A_better":
         return "win" if model_at_a == target_model else "loss"
     if verdict == "B_better":
@@ -92,7 +101,11 @@ def verdict_to_side(model_at_a, model_at_b, verdict, target_model="ft_qwen"):
 
 
 def verdict_letter(verdict):
-    """把本站的 A_better/B_better/tie 轉成跟 Opus judged.jsonl 一致的 A/B/tie 字母"""
+    """把本站的 A_better/B_better/tie 轉成跟 Opus judged.jsonl 一致的 A/B/tie 字母
+
+    Opus 的評測沒有「兩者皆不佳」這個選項，所以 both_bad 沒有對應字母，
+    回傳 None 讓呼叫端把這幾筆從 kappa 一致性計算中排除，不強行湊成不一致。
+    """
     return {"A_better": "A", "B_better": "B", "tie": "tie"}.get(verdict)
 
 
@@ -328,7 +341,12 @@ def analyze_agri(mapping, opus_verdicts):
                 "A實際模型": model_a,
                 "B實際模型": model_b,
                 "農業深度_選擇": VERDICT_LABELS.get(verdict, "未作答"),
-                "農業深度_ft結果": {"win": "ft勝", "loss": f"{opp_model}勝", "tie": "平手"}.get(side, ""),
+                "農業深度_ft結果": {
+                    "win": "ft勝",
+                    "loss": f"{opp_model}勝",
+                    "tie": "平手",
+                    "both_bad": "兩者皆不佳",
+                }.get(side, ""),
             })
 
             human_letter = verdict_letter(verdict)
@@ -430,22 +448,25 @@ def write_report(lab_summary, agri_summary):
             "",
         ]
         p = agri_summary["pooled_depth"]
-        win, loss, tie = p.get("win", 0), p.get("loss", 0), p.get("tie", 0)
-        total = win + loss + tie
+        win, loss, tie, both_bad = (
+            p.get("win", 0), p.get("loss", 0), p.get("tie", 0), p.get("both_bad", 0)
+        )
+        total = win + loss + tie + both_bad
         lines += [
             f"- ft_qwen 勝：{win}（{percent(win, total)}）",
             f"- 對手勝：{loss}（{percent(loss, total)}）",
             f"- 平手：{tie}（{percent(tie, total)}）",
+            f"- 兩者皆不佳：{both_bad}（{percent(both_bad, total)}）",
             "",
             "### 各對戰組合的農業深度勝率",
             "",
-            "| 對戰組合 | ft勝 | 對手勝 | 平手 | ft勝率(排除平手) |",
-            "|---|---:|---:|---:|---:|",
+            "| 對戰組合 | ft勝 | 對手勝 | 平手 | 兩者皆不佳 | ft勝率(排除平手與兩者皆不佳) |",
+            "|---|---:|---:|---:|---:|---:|",
         ]
         for matchup, label in MATCHUP_LABELS.items():
             c = agri_summary["depth_by_matchup"][matchup]
-            w, l, t = c.get("win", 0), c.get("loss", 0), c.get("tie", 0)
-            lines.append(f"| {label} | {w} | {l} | {t} | {percent(w, w+l)} |")
+            w, l, t, bb = c.get("win", 0), c.get("loss", 0), c.get("tie", 0), c.get("both_bad", 0)
+            lines.append(f"| {label} | {w} | {l} | {t} | {bb} | {percent(w, w+l)} |")
 
         k = agri_summary["depth_vs_opus_kappa"]
         lines += [
