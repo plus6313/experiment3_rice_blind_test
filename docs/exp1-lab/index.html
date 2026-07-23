@@ -396,6 +396,15 @@
   <input type="text" id="evaluator-name" placeholder="請輸入姓名" autocomplete="name" />
   <div id="resume-hint" class="hint" style="display:none;"></div>
   <button id="btn-start">開始評測</button>
+
+  <div style="margin-top:20px;padding-top:16px;border-top:1px solid #ddd;">
+    <p style="font-size:0.9rem;color:#666;margin-bottom:8px;">
+      若您先前用「下載我的作答備份」存過 JSON 檔（例如換瀏覽器、換裝置，或本機紀錄遺失時），可在此匯入該檔案，會自動帶您跳到第一題未完成的題目繼續作答。
+    </p>
+    <input type="file" id="import-file" accept="application/json" style="display:none;" />
+    <button id="btn-import" class="secondary" type="button">匯入備份檔繼續作答</button>
+    <div id="import-status" style="font-size:0.85rem;margin-top:6px;"></div>
+  </div>
 </div>
 
 <!-- ===== 評測畫面 ===== -->
@@ -675,6 +684,6 @@
   <img id="lightbox-img" src="" alt="放大照片" />
 </div>
 
-<script src="app.js?v=2"></script>
+<script src="app.js?v=3"></script>
 </body>
 </html>

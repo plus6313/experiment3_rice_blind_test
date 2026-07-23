@@ -289,6 +289,61 @@ function downloadBackup() {
   URL.revokeObjectURL(url);
 }
 
+// ---- 匯入備份檔繼續作答 ----
+
+function applyImportedPayload(payload) {
+  if (!payload || !Array.isArray(payload.responses)) {
+    throw new Error("找不到 responses 陣列，檔案格式不正確。");
+  }
+
+  const imported = {};
+  payload.responses.forEach((r) => {
+    if (!r || !r.comparison_id) return;
+    const entry = {};
+    for (const f of SCORE_FIELDS) {
+      entry[f] = r[f] !== undefined && r[f] !== null && r[f] !== "" ? String(r[f]) : null;
+    }
+    entry.overall_verdict = r.overall_verdict || null;
+    entry.comment = r.comment || "";
+    imported[r.comparison_id] = entry;
+  });
+
+  responses = imported;
+  evaluatorName = payload.evaluator_name || "";
+  document.getElementById("evaluator-name").value = evaluatorName;
+
+  let resumeIndex = ITEMS.findIndex((item) => !isComplete(responses[item.comparison_id]));
+  if (resumeIndex === -1) resumeIndex = 0;
+  currentIndex = resumeIndex;
+
+  saveProgress();
+  return Object.values(responses).filter(isComplete).length;
+}
+
+function handleImportFile(file) {
+  const statusEl = document.getElementById("import-status");
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const payload = JSON.parse(reader.result);
+      const nAnswered = applyImportedPayload(payload);
+      statusEl.style.color = "#166534";
+      statusEl.textContent = `✅ 已匯入「${evaluatorName || "未命名"}」的作答紀錄（${nAnswered} / ${ITEMS.length} 題已完成），即將帶您跳到第一個未完成的題目。`;
+      showScreen("question");
+      renderItem(currentIndex);
+    } catch (err) {
+      statusEl.style.color = "#b91c1c";
+      statusEl.textContent = "❌ 匯入失敗：檔案格式不正確，請確認選擇的是本表單「下載我的作答備份」產生的 JSON 檔。";
+      console.error(err);
+    }
+  };
+  reader.onerror = () => {
+    statusEl.style.color = "#b91c1c";
+    statusEl.textContent = "❌ 讀取檔案失敗，請重新選擇檔案。";
+  };
+  reader.readAsText(file, "utf-8");
+}
+
 // ---- Google Apps Script 傳送（與 Q4 / Q2 相同邏輯）----
 
 function appsScriptJsonpRequest(params = {}, timeoutMs = 10000) {
@@ -529,6 +584,17 @@ async function init() {
   document.getElementById("btn-submit").addEventListener("click", onSubmit);
   document.getElementById("btn-download").addEventListener("click", downloadBackup);
   document.getElementById("criteria-form").addEventListener("change", onFormChange);
+
+  const importBtn = document.getElementById("btn-import");
+  const importInput = document.getElementById("import-file");
+  if (importBtn && importInput) {
+    importBtn.addEventListener("click", () => importInput.click());
+    importInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (file) handleImportFile(file);
+      importInput.value = "";
+    });
+  }
 
   const stageBtn = document.getElementById("btn-stage-table");
   const stageOverlay = document.getElementById("stage-table-overlay");
