@@ -292,7 +292,8 @@
     本次評測共 <strong>100 題</strong>（50張照片，各對應生育階段判讀Q2與管理建議Q3兩種題型），每題提供一張稻田照片、參考資訊，以及兩個 AI 系統的回答（選項 A 與選項 B）。<br />
     <strong>評分方式：</strong>針對以下四個面向，分別為 A、B 各自評 <strong>0～3 分</strong>（不是比較 A、B 誰好，而是各自對照評分標準獨立評分），
     最後再給一個綜合的整體判斷。<br />
-    <strong>「不適用」選項：</strong>如果某個維度對這一題的答案確實不適用（例如Q2的生育階段判讀題，答案完全沒有提及任何管理建議，導致無法評「可操作性」），可以選擇「不適用」，這一題的這個維度就不會被計入該維度的統計，不用勉強打分。<br />
+    <strong>「不適用」選項：</strong>如果某個維度對這一題的答案確實不適用，可以選擇「不適用」，這一題的這個維度就不會被計入該維度的統計，不用勉強打分。
+    Q2的生育階段判讀題不要求給出管理建議，因此「可操作性」這個維度對Q2一律不適用，系統會自動選為「不適用」，不需手動勾選。<br />
     <strong>注意：</strong>本表單不包含「農業深度」這個維度——該維度改由農業專家在獨立的表單評分，因為農業深度需要真正的田間栽培專業知識才能可靠判斷。
     照片與下方提供的參考答案（GT）即為判斷依據，請勿依賴其他外部知識猜測模型身份。
   </p>
@@ -348,17 +349,18 @@
 
   <details class="intro-rubric-block" open>
     <summary>3. 可操作性（Actionability）</summary>
+    <p style="font-size:0.9rem;color:#666;margin:4px 0 8px;">Q2（生育階段判讀題）不評此維度，系統會自動選為「不適用」。</p>
     <ul>
-      <li><strong>3分</strong>：給出具體、可直接執行的判斷依據或建議
-        <span class="ex">範例：「建議近期觀察莖基部是否開始拔節，並確認幼穗是否已分化，以確認是否進入下一階段。」</span>
+      <li><strong>3分</strong>：有給出所有具體、可直接執行的建議
+        <span class="ex">範例：「建議近期觀察莖基部是否開始拔節，並確認幼穗是否已分化，以確認是否進入下一階段。」——建議具體、可直接照做，且涵蓋所有應有的重點。</span>
       </li>
-      <li><strong>2分</strong>：有具體建議但不夠明確，需要進一步解讀才能執行
-        <span class="ex">範例：「建議持續觀察生育進程變化。」——方向正確但不夠具體到可以直接照做。</span>
+      <li><strong>2分</strong>：給出部分具體建議，但不夠完整
+        <span class="ex">範例：假設情境同時需要施肥與水位管理兩方面的建議，答案具體提到「建議追加施肥，每分地約施用X公斤」，卻完全沒提到水位管理——具體建議只涵蓋部分應注意的面向，遺漏了其他重點。</span>
       </li>
-      <li><strong>1分</strong>：建議模糊籠統
-        <span class="ex">範例：「請加強田間管理」、「注意栽培細節」——沒有指向任何具體動作。</span>
+      <li><strong>1分</strong>：僅敘述較籠統的建議，例如需要加強田間管理、建議到田間近距離觀察等
+        <span class="ex">範例：「請加強田間管理」、「建議持續觀察生育進程變化」、「建議到田間近距離觀察」——沒有指向任何具體動作，只是籠統帶過。</span>
       </li>
-      <li><strong>0分</strong>：沒有任何實務參考價值
+      <li><strong>0分</strong>：完全沒給出可操作建議
         <span class="ex">範例：完全沒有提出任何建議或後續行動方向。</span>
       </li>
     </ul>
@@ -517,20 +519,21 @@
         </div>
 
         <div class="criterion">
-          <div class="criterion-header"><strong>3. 可操作性（Actionability）</strong></div>
+          <div class="criterion-header"><strong>3. 可操作性（Actionability）</strong> <span id="actionability-q2-note" style="display:none;color:#b45309;font-size:0.85rem;font-weight:normal;">（Q2生育階段判讀題不適用，已自動評為「不適用」）</span></div>
           <details class="rubric-detail">
             <summary>查看評分標準與範例</summary>
+            <p style="color:#666;margin:4px 0 8px;">Q2（生育階段判讀題）不評此維度，系統會自動選為「不適用」。</p>
             <ul>
-              <li><strong>3分</strong>：給出具體、可直接執行的判斷依據或建議
-                <span class="ex">範例：「建議近期觀察莖基部是否開始拔節，並確認幼穗是否已分化，以確認是否進入下一階段。」</span>
+              <li><strong>3分</strong>：有給出所有具體、可直接執行的建議
+                <span class="ex">範例：「建議近期觀察莖基部是否開始拔節，並確認幼穗是否已分化，以確認是否進入下一階段。」——建議具體、可直接照做，且涵蓋所有應有的重點。</span>
               </li>
-              <li><strong>2分</strong>：有具體建議但不夠明確，需要進一步解讀才能執行
-                <span class="ex">範例：「建議持續觀察生育進程變化。」——方向正確但不夠具體到可以直接照做。</span>
+              <li><strong>2分</strong>：給出部分具體建議，但不夠完整
+                <span class="ex">範例：假設情境同時需要施肥與水位管理兩方面的建議，答案具體提到「建議追加施肥，每分地約施用X公斤」，卻完全沒提到水位管理——具體建議只涵蓋部分應注意的面向，遺漏了其他重點。</span>
               </li>
-              <li><strong>1分</strong>：建議模糊籠統
-                <span class="ex">範例：「請加強田間管理」、「注意栽培細節」——沒有指向任何具體動作。</span>
+              <li><strong>1分</strong>：僅敘述較籠統的建議，例如需要加強田間管理、建議到田間近距離觀察等
+                <span class="ex">範例：「請加強田間管理」、「建議持續觀察生育進程變化」、「建議到田間近距離觀察」——沒有指向任何具體動作，只是籠統帶過。</span>
               </li>
-              <li><strong>0分</strong>：沒有任何實務參考價值
+              <li><strong>0分</strong>：完全沒給出可操作建議
                 <span class="ex">範例：完全沒有提出任何建議或後續行動方向。</span>
               </li>
             </ul>

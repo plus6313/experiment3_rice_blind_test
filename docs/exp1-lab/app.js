@@ -97,6 +97,13 @@ function currentFormValues() {
   }
   result.overall_verdict = fd.get("overall_verdict") || null;
   result.comment = document.getElementById("comment").value || "";
+
+  const item = ITEMS[currentIndex];
+  if (item && item.question_id === "Q2") {
+    // Q2（生育階段判讀題）不要求管理建議，可操作性一律視為不適用
+    result.criterion_3_actionability_a = "na";
+    result.criterion_3_actionability_b = "na";
+  }
   return result;
 }
 
@@ -172,6 +179,22 @@ function renderItem(index) {
     }
     document.getElementById("comment").value = saved.comment || "";
   }
+
+  const isQ2 = item.question_id === "Q2";
+  ["a", "b"].forEach((side) => {
+    const radios = form.querySelectorAll(`input[name="criterion_3_actionability_${side}"]`);
+    radios.forEach((r) => { r.disabled = isQ2; });
+  });
+  if (isQ2) {
+    const naA = form.querySelector('input[name="criterion_3_actionability_a"][value="na"]');
+    const naB = form.querySelector('input[name="criterion_3_actionability_b"][value="na"]');
+    if (naA) naA.checked = true;
+    if (naB) naB.checked = true;
+    responses[item.comparison_id] = currentFormValues();
+    saveProgress();
+  }
+  const actionabilityNote = document.getElementById("actionability-q2-note");
+  if (actionabilityNote) actionabilityNote.style.display = isQ2 ? "inline" : "none";
 
   document.getElementById("btn-prev").disabled = index === 0;
   document.getElementById("btn-next").textContent =
